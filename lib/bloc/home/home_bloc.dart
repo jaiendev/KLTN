@@ -1,5 +1,8 @@
 import 'package:app_kltn_trunghoan/bloc/app_bloc.dart';
 import 'package:app_kltn_trunghoan/bloc/app_state/bloc.dart';
+import 'package:app_kltn_trunghoan/data/local_data_source/user_local_data.dart';
+import 'package:app_kltn_trunghoan/routes/app_pages.dart';
+import 'package:app_kltn_trunghoan/routes/app_routes.dart';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 
@@ -30,10 +33,14 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   HomeDone get _homeDone => HomeDone(index: currentIndex);
 
   _handleChangeIndex(OnChangeIndexEvent event) {
-    currentIndex = event.index;
+    if (UserLocal().getAccessToken() == '' && [2, 3].contains(event.index)) {
+      AppNavigator.push(Routes.STARTED);
+    } else {
+      currentIndex = event.index;
 
-    if (currentIndex == 0) {
-      AppBloc.appStateBloc.add(OnStartApp());
+      if (currentIndex == 0) {
+        AppBloc.appStateBloc.add(OnStartApp());
+      }
     }
   }
 }

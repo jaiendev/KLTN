@@ -16,6 +16,9 @@ const Color colorGray3 = Color(0xFFC3C2BE);
 const Color colorWhite1 = Color(0xFFF5F5F5);
 const Color colorHintSearch = Color(0xFF888999);
 const Color backgroundDetails = Color(0xFFF5F5F5);
+const colorDialogBackGround = Color(0xFFFFFFFF);
+const colorDialogError = Color(0xFFE89F2F);
+const Color headerCalendarColor = Color(0xFF1C4843);
 
 ///Images
 
@@ -25,6 +28,7 @@ const String imgBegin2 = 'assets/images/img_begin_2.gif';
 
 const String avatarDefault = 'assets/icons/img_avatar_default.png';
 const String backgroundProduct = 'assets/images/background_product.png';
+const String imageRegisterSuccess = 'assets/images/img_register_success.png';
 
 ///Fonts
 const PTSANS = 'PTSan';
@@ -46,6 +50,10 @@ const String icMemory = 'assets/images/icon_memory.png';
 const String iconPhoto = 'assets/icons/icon_photo.png';
 const String iconCamera = 'assets/icons/icon_camera.png';
 const String iconBox = 'assets/icons/icon_box.png';
+const String imageLoading = 'assets/images/img_loading.gif';
+const String iconExclamationMark = 'assets/icons/ic_exclamation_mark.png';
+const String iconEye = 'assets/icons/ic_eye.png';
+const String iconEyeOff = 'assets/icons/ic_eye_splash.png';
 
 //Nunmber
 const DELAY_50_MS = 50;
@@ -78,6 +86,11 @@ final Divider dividerChat = Divider(
   color: colorPrimary,
   thickness: 0.3.sp,
   height: 0.3.sp,
+);
+
+final dividerDialog = Container(
+  height: .5.sp,
+  color: Color(0xFFE3E3E3),
 );
 
 const CONNECT_TIME_OUT = 5000;

@@ -14,27 +14,25 @@ class OnAuthProcess extends AuthenicationEvent {
 class RegisterEvent extends AuthenicationEvent {
   final String email;
   final String password;
-  final int province;
   final String fullname;
-  final String? phone;
+  final String passwordConfirm;
   RegisterEvent({
     required this.email,
     required this.password,
-    required this.province,
     required this.fullname,
-    this.phone,
+    required this.passwordConfirm,
   });
 }
 
 class LoginEvent extends AuthenicationEvent {
   final bool isRemember;
-  final bool isExpert;
   final String email;
   final String password;
   LoginEvent({
     required this.email,
     required this.password,
     required this.isRemember,
-    required this.isExpert,
   });
 }
+
+class LogOutEvent extends AuthenicationEvent {}

@@ -1,7 +1,9 @@
+import 'package:app_kltn_trunghoan/bloc/authenication/authenication_bloc.dart';
 import 'package:app_kltn_trunghoan/common/widgets/button_icon.dart';
 import 'package:app_kltn_trunghoan/common/widgets/custom_image/network_image/cached_image.dart';
 import 'package:app_kltn_trunghoan/common/widgets/search_box.dart';
 import 'package:app_kltn_trunghoan/constants/constants.dart';
+import 'package:app_kltn_trunghoan/data/local_data_source/user_local_data.dart';
 import 'package:app_kltn_trunghoan/routes/app_pages.dart';
 import 'package:app_kltn_trunghoan/routes/app_routes.dart';
 import 'package:app_kltn_trunghoan/ui/home/widgets/categories_home.dart';
@@ -9,6 +11,7 @@ import 'package:app_kltn_trunghoan/ui/home/widgets/hot_product.dart';
 import 'package:app_kltn_trunghoan/ui/home/widgets/product_recommend_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:sizer/sizer.dart';
 
@@ -20,6 +23,11 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,21 +59,29 @@ class _HomeScreenState extends State<HomeScreen> {
                         onHandlePressed: () {},
                         icon: PhosphorIcons.squares_four_light,
                       ),
-                      Row(
-                        children: [
-                          ButtonIcon(
-                            onHandlePressed: () {
-                              AppNavigator.push(Routes.CART);
-                            },
-                            icon: PhosphorIcons.shopping_cart_simple_light,
-                          ),
-                          SizedBox(width: 10.sp),
-                          CustomNetworkImage(
-                            urlToImage: urlImageMan,
-                            height: 28.sp,
-                            width: 28.sp,
-                          ),
-                        ],
+                      BlocBuilder<AuthenicationBloc, AuthenicationState>(
+                        builder: (context, state) {
+                          if (state is AuthenticationSuccess) {
+                            return Row(
+                              children: [
+                                ButtonIcon(
+                                  onHandlePressed: () {
+                                    AppNavigator.push(Routes.CART);
+                                  },
+                                  icon:
+                                      PhosphorIcons.shopping_cart_simple_light,
+                                ),
+                                SizedBox(width: 10.sp),
+                                CustomNetworkImage(
+                                  urlToImage: UserLocal().getUser().photo,
+                                  height: 28.sp,
+                                  width: 28.sp,
+                                ),
+                              ],
+                            );
+                          }
+                          return Container();
+                        },
                       )
                     ],
                   ),

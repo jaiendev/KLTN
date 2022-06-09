@@ -2,12 +2,16 @@ import 'dart:async';
 import 'package:app_kltn_trunghoan/bloc/app_bloc.dart';
 import 'package:app_kltn_trunghoan/bloc/app_state/bloc.dart';
 import 'package:app_kltn_trunghoan/bloc/home/home_bloc.dart';
+import 'package:app_kltn_trunghoan/common/widgets/dialogs/dialog_confirm_cancel.dart';
+import 'package:app_kltn_trunghoan/common/widgets/dialogs/dialog_wrapper.dart';
+import 'package:app_kltn_trunghoan/models/slide_model.dart';
 import 'package:app_kltn_trunghoan/routes/app_pages.dart';
 import 'package:app_kltn_trunghoan/routes/app_routes.dart';
 
 import 'package:bloc/bloc.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/services.dart';
+import 'package:sizer/sizer.dart';
 
 class AppStateBloc extends Bloc<AppStateEvent, AppStateState> {
   AppStateBloc() : super(AppStateInitial());
@@ -89,20 +93,20 @@ class AppStateBloc extends Bloc<AppStateEvent, AppStateState> {
     if (isNetworkConnected) {
       isNetworkConnected = false;
       // Show dialog alert no internet and reconnect
-      // await dialogAnimationWrapper(
-      //   dismissible: false,
-      //   borderRadius: 10.sp,
-      //   slideFrom: SlideMode.bot,
-      //   child: DialogConfirmCancel(
-      //     bodyBefore: Strings.connectionNoti.i18n,
-      //     confirmText: Strings.retry.i18n,
-      //     onConfirmed: () {
-      //       AppNavigator.popUntil(Routes.ROOT);
-      //       AppBloc.homeBloc.add(OnChangeIndexEvent());
-      //       isNetworkConnected = true;
-      //     },
-      //   ),
-      // );
+      await dialogAnimationWrapper(
+        dismissible: false,
+        borderRadius: 10.sp,
+        slideFrom: SlideMode.bot,
+        child: DialogConfirmCancel(
+          bodyBefore: 'Disconnect Internet',
+          confirmText: 'Retry',
+          onConfirmed: () {
+            AppNavigator.popUntil(Routes.HOME);
+            AppBloc.homeBloc.add(OnChangeIndexEvent());
+            isNetworkConnected = true;
+          },
+        ),
+      );
     }
   }
 }

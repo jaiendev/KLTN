@@ -5,7 +5,7 @@ import 'package:hive/hive.dart';
 
 class UserLocal {
   var box = Hive.box(StorageKey.BOX_USER);
-  void saveAccountRemember(String email, String pass, bool isExpert) {
+  void saveAccountRemember(String email, String pass) {
     AccountRemember accountRemember;
     var _accountModel = box.get(StorageKey.LIST_ACCOUNT);
     if (_accountModel == null) {
@@ -90,6 +90,7 @@ class UserLocal {
         phone: '',
         photo: '',
         role: '',
+        verified: false,
       );
     return AccountModel.fromJson(_accountLocal);
   }
@@ -100,10 +101,6 @@ class UserLocal {
 
   void saveBackupToken(String token) async {
     box.put(StorageKey.BACKUP_TOKEN, token);
-  }
-
-  void saveIsExpert(bool value) async {
-    box.put(StorageKey.IS_EXPERT, value);
   }
 
   void clearAccessToken() async {

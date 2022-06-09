@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:app_kltn_trunghoan/models/product_model.dart';
+import 'package:app_kltn_trunghoan/models/card_model.dart';
 import 'package:flutter/foundation.dart';
 
 import 'package:app_kltn_trunghoan/models/puchasing_model.dart';
@@ -15,7 +15,8 @@ class AccountModel {
   final String gender;
   final String role;
   final List<PurchasingModel>? purchasingHistory;
-  final List<ProductModel>? cart;
+  final List<CartModel>? cart;
+  final bool verified;
   AccountModel({
     required this.id,
     required this.name,
@@ -27,6 +28,7 @@ class AccountModel {
     required this.role,
     this.purchasingHistory,
     this.cart,
+    required this.verified,
   });
 
   AccountModel copyWith({
@@ -39,7 +41,8 @@ class AccountModel {
     String? gender,
     String? role,
     List<PurchasingModel>? purchasingHistory,
-    List<ProductModel>? cart,
+    List<CartModel>? cart,
+    bool? verified,
   }) {
     return AccountModel(
       id: id ?? this.id,
@@ -52,6 +55,7 @@ class AccountModel {
       role: role ?? this.role,
       purchasingHistory: purchasingHistory ?? this.purchasingHistory,
       cart: cart ?? this.cart,
+      verified: verified ?? this.verified,
     );
   }
 
@@ -80,14 +84,16 @@ class AccountModel {
       phone: map['phone'] ?? '',
       gender: map['gender'] ?? '',
       role: map['role'] ?? '',
-      purchasingHistory: map['purchasingHistory'] != null
-          ? List<PurchasingModel>.from(
-              map['purchasingHistory']?.map((x) => PurchasingModel.fromMap(x)))
-          : null,
-      cart: map['cart']['items'] != null
-          ? List<ProductModel>.from(map['purchasingHistory']
-              ?.map((product) => ProductModel.fromMap(product)))
-          : null,
+      verified: map['verified'] ?? false,
+      purchasingHistory: map['purchasingHistory'] == null
+          ? []
+          : (map['purchasingHistory'] as List<dynamic>)
+              .map((offer) => PurchasingModel.fromMap(offer))
+              .toList(),
+      // cart: map['cart']['items'] != null
+      //     ? List<CartModel>.from((map['cart']['items'])
+      //         .map((product) => CartModel.fromMap(product)))
+      //     : null,
     );
   }
 

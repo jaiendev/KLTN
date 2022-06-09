@@ -109,7 +109,7 @@ class ProductModel {
 
   factory ProductModel.fromMap(Map<String, dynamic> map) {
     return ProductModel(
-      id: map['id'] ?? '',
+      id: map['_id'] ?? '',
       name: map['name'] ?? '',
       slug: map['slug'] ?? '',
       price: map['price']?.toDouble() ?? 0.0,

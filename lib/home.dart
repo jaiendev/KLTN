@@ -97,9 +97,11 @@ class _HomeState extends State<Home> {
     return Expanded(
       child: TouchableOpacity(
         onTap: () {
-          AppBloc.homeBloc.add(OnChangeIndexEvent(
-            index: index,
-          ));
+          AppBloc.homeBloc.add(
+            OnChangeIndexEvent(
+              index: index,
+            ),
+          );
         },
         child: BlocBuilder<HomeBloc, HomeState>(
           builder: (context, state) {

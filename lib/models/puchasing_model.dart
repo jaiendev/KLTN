@@ -1,10 +1,12 @@
 import 'dart:convert';
 
-import 'package:app_kltn_trunghoan/models/product_model.dart';
+import 'package:flutter/foundation.dart';
+
+import 'package:app_kltn_trunghoan/models/card_model.dart';
 
 class PurchasingModel {
   final String id;
-  final ProductModel items;
+  final List<CartModel> items;
   final String name;
   final String shippingAddress;
   final double price;
@@ -20,7 +22,7 @@ class PurchasingModel {
 
   PurchasingModel copyWith({
     String? id,
-    ProductModel? items,
+    List<CartModel>? items,
     String? name,
     String? shippingAddress,
     double? price,
@@ -39,7 +41,7 @@ class PurchasingModel {
   Map<String, dynamic> toMap() {
     return {
       '_id': id,
-      'items': items.toMap(),
+      'items': items.map((x) => x.toMap()).toList(),
       'name': name,
       'shippingAddress': shippingAddress,
       'price': price,
@@ -50,7 +52,8 @@ class PurchasingModel {
   factory PurchasingModel.fromMap(Map<String, dynamic> map) {
     return PurchasingModel(
       id: map['_id'] ?? '',
-      items: ProductModel.fromMap(map['items']),
+      items:
+          List<CartModel>.from(map['items']?.map((x) => CartModel.fromMap(x))),
       name: map['name'] ?? '',
       shippingAddress: map['shippingAddress'] ?? '',
       price: map['price']?.toDouble() ?? 0.0,
@@ -74,7 +77,7 @@ class PurchasingModel {
 
     return other is PurchasingModel &&
         other.id == id &&
-        other.items == items &&
+        listEquals(other.items, items) &&
         other.name == name &&
         other.shippingAddress == shippingAddress &&
         other.price == price &&
