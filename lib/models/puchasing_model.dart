@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 
-import 'package:app_kltn_trunghoan/models/card_model.dart';
+import 'package:app_kltn_trunghoan/models/cart_model.dart';
 
 class PurchasingModel {
   final String id;

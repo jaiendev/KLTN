@@ -3,7 +3,7 @@ import 'package:app_kltn_trunghoan/constants/constants.dart';
 import 'package:app_kltn_trunghoan/routes/app_pages.dart';
 
 import 'package:flutter/material.dart';
-import 'package:sizer/sizer.dart';
+import 'package:app_kltn_trunghoan/helpers/sizer_custom/sizer.dart';
 
 class DialogWithImageTextAndPopButton extends StatelessWidget {
   const DialogWithImageTextAndPopButton({

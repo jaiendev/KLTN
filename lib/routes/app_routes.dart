@@ -12,10 +12,14 @@ class Routes {
   static const DETAIL_PRODUCT = '/detailProduct';
   static const CART = '/cart';
   static const FILTER_PRODUCT = '/filter_product';
-
+  static const CREATE_RATING = '/create_rating';
   //Profile
   static const EDIT_PROFILE = '/edit_profile';
   static const CHANGE_PASSWORD = '/change_password';
   static const FAVORITE_PRODUCT = '/favorite_product';
   static const MY_PURCHASES = '/my_purchases';
+
+  //payment_vnpay
+  static const PAYMENT_VNPAY = '/payment_vnpay';
+  static const PAYMENT_RESULT = '/paymentResult';
 }

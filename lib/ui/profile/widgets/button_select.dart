@@ -2,7 +2,7 @@ import 'package:app_kltn_trunghoan/common/widgets/touchable_opacity.dart';
 import 'package:app_kltn_trunghoan/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
-import 'package:sizer/sizer.dart';
+import 'package:app_kltn_trunghoan/helpers/sizer_custom/sizer.dart';
 
 class ButtonSelect extends StatelessWidget {
   final IconData icon;

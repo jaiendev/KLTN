@@ -11,12 +11,11 @@ import 'package:app_kltn_trunghoan/routes/app_routes.dart';
 import 'package:bloc/bloc.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/services.dart';
-import 'package:sizer/sizer.dart';
+import 'package:app_kltn_trunghoan/helpers/sizer_custom/sizer.dart';
 
 class AppStateBloc extends Bloc<AppStateEvent, AppStateState> {
   AppStateBloc() : super(AppStateInitial());
   final Connectivity _connectivity = Connectivity();
-  // ignore: cancel_subscriptions
   late StreamSubscription<ConnectivityResult> connectivitySubscription;
   bool isNetworkConnected = true;
   bool isActive = true;
@@ -47,15 +46,12 @@ class AppStateBloc extends Bloc<AppStateEvent, AppStateState> {
 
   void _handleBackground() {
     if (isActive) {
-      isActive = false;
-      // InitialAppChannel.resetFlag();
-      // SocketEmit().sendSetInActive();
+      isActive = true;
     }
   }
 
   Future<void> _initConnectivity() async {
     ConnectivityResult result = ConnectivityResult.none;
-    // Platform messages may fail, so we use a try/catch PlatformException.
     try {
       result = await _connectivity.checkConnectivity();
     } on PlatformException catch (e) {

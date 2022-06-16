@@ -2,7 +2,7 @@ import 'package:app_kltn_trunghoan/configs/application.dart';
 import 'package:app_kltn_trunghoan/models/slide_model.dart';
 import 'package:app_kltn_trunghoan/routes/app_pages.dart';
 import 'package:flutter/material.dart';
-import 'package:sizer/sizer.dart';
+import 'package:app_kltn_trunghoan/helpers/sizer_custom/sizer.dart';
 
 Future dialogAnimationWrapper({
   SlideMode slideFrom = SlideMode.left,

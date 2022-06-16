@@ -1,11 +1,12 @@
 import 'package:app_kltn_trunghoan/constants/constants.dart';
+import 'package:app_kltn_trunghoan/helpers/extentions/strings_extentions.dart';
 import 'package:flutter/material.dart';
-import 'package:sizer/sizer.dart';
+import 'package:app_kltn_trunghoan/helpers/sizer_custom/sizer.dart';
 
 // ignore: must_be_immutable
-class TextTotal extends StatelessWidget {
+class TextTotal extends StatefulWidget {
   final String title;
-  final double price;
+  final int price;
   final bool isCheckLast;
   String? description;
   TextTotal({
@@ -14,6 +15,12 @@ class TextTotal extends StatelessWidget {
     this.isCheckLast = false,
     this.description,
   });
+
+  @override
+  State<TextTotal> createState() => _TextTotalState();
+}
+
+class _TextTotalState extends State<TextTotal> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -25,7 +32,7 @@ class TextTotal extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                '${title}',
+                '${widget.title}',
                 style: TextStyle(
                   color: colorPrimary,
                   fontSize: 14.sp,
@@ -35,7 +42,7 @@ class TextTotal extends StatelessWidget {
               RichText(
                 text: TextSpan(
                   children: [
-                    description != null
+                    widget.description != null
                         ? TextSpan(
                             text: '(4 items)  ',
                             style: TextStyle(
@@ -51,7 +58,7 @@ class TextTotal extends StatelessWidget {
                             ),
                           ),
                     TextSpan(
-                      text: '\$',
+                      text: '${widget.price.toStringAsFixed(0).formatMoney()}',
                       style: TextStyle(
                         color: colorPrimary,
                         fontSize: 14.sp,
@@ -59,15 +66,7 @@ class TextTotal extends StatelessWidget {
                       ),
                     ),
                     TextSpan(
-                      text: '${price}',
-                      style: TextStyle(
-                        color: colorPrimary,
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    TextSpan(
-                      text: ' USB',
+                      text: ' VNĐ',
                       style: TextStyle(
                         color: colorGray2,
                         fontSize: 14.sp,
@@ -80,7 +79,7 @@ class TextTotal extends StatelessWidget {
             ],
           ),
           SizedBox(height: 15.sp),
-          !isCheckLast ? dividerChat : SizedBox(),
+          !widget.isCheckLast ? dividerChat : SizedBox(),
         ],
       ),
     );

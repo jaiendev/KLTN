@@ -3,7 +3,7 @@ import 'package:app_kltn_trunghoan/common/widgets/button_primary.dart';
 import 'package:app_kltn_trunghoan/common/widgets/text_field_form.dart';
 import 'package:app_kltn_trunghoan/ui/edit_profile/widgets/title_text_field.dart';
 import 'package:flutter/material.dart';
-import 'package:sizer/sizer.dart';
+import 'package:app_kltn_trunghoan/helpers/sizer_custom/sizer.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
   const ChangePasswordScreen({Key? key}) : super(key: key);

@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:sizer/sizer.dart';
+import 'package:app_kltn_trunghoan/helpers/sizer_custom/sizer.dart';
 
 class PreloadAssets {
   static late Image imgBegin;

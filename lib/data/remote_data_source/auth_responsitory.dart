@@ -1,3 +1,5 @@
+import 'package:app_kltn_trunghoan/bloc/app_bloc.dart';
+import 'package:app_kltn_trunghoan/bloc/user/user_bloc.dart';
 import 'package:app_kltn_trunghoan/constants/endpoints.dart';
 import 'package:app_kltn_trunghoan/constants/http_status_code.dart';
 import 'package:app_kltn_trunghoan/data/base_repository.dart';
@@ -19,8 +21,6 @@ class AuthRepository {
       },
     );
 
-    print(response.statusCode);
-
     if (response.statusCode == StatusCode.OK) {
       var dataJson = response.data['data'];
       String token = response.data['token'];
@@ -31,7 +31,8 @@ class AuthRepository {
       UserLocal().saveAccessToken(token);
       UserLocal().saveAccount(accountModel);
 
-      print(UserLocal().getUser().photo);
+      AppBloc.userBloc.add(SaveUser(accountModel: accountModel));
+
       return accountModel;
     } else {
       String message = response.data['message'];
@@ -42,6 +43,7 @@ class AuthRepository {
         throw AuthenticationException.DONT_VERIFY;
       }
     }
+    return null;
   }
 
   Future<AccountModel?> register({
@@ -61,8 +63,7 @@ class AuthRepository {
       Endpoints.REGISTER,
       body,
     );
-    print(response.statusCode);
-    print(response.data);
+
     if (response.statusCode == StatusCode.CREATED) {
       var dataJson = response.data['data']['user'];
       AccountModel accountModel = AccountModel.fromMap(dataJson);

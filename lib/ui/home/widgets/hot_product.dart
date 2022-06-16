@@ -1,7 +1,7 @@
 import 'package:app_kltn_trunghoan/common/widgets/title_and_seemore.dart';
 
 import 'package:flutter/material.dart';
-import 'package:sizer/sizer.dart';
+import 'package:app_kltn_trunghoan/helpers/sizer_custom/sizer.dart';
 
 class HotProduct extends StatelessWidget {
   const HotProduct({Key? key}) : super(key: key);

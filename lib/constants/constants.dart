@@ -1,7 +1,7 @@
 // ignore_for_file: constant_identifier_names
 
 import 'package:flutter/material.dart';
-import 'package:sizer/sizer.dart';
+import 'package:app_kltn_trunghoan/helpers/sizer_custom/sizer.dart';
 
 const Color colorPrimary = Color(0xFF3C4045);
 const Color colorInactiveTextField = Color(0xFFF5F5F5);
@@ -19,6 +19,10 @@ const Color backgroundDetails = Color(0xFFF5F5F5);
 const colorDialogBackGround = Color(0xFFFFFFFF);
 const colorDialogError = Color(0xFFE89F2F);
 const Color headerCalendarColor = Color(0xFF1C4843);
+const Color colorStar = Color(0xFFF5B353);
+const Color colorGray4 = Color(0xFFC4C4C4);
+const Color colorBlue = Color(0xFFdbf4fa);
+const Color colorBlue2 = Color(0xFF0a647a);
 
 ///Images
 
@@ -47,6 +51,9 @@ const String icMouse = 'assets/images/icon_mouse.png';
 const String icScreen = 'assets/images/icon_screen.png';
 const String icMemory = 'assets/images/icon_memory.png';
 
+const String iconStar = 'assets/icons/ic_star.png';
+const String iconStarGrey = 'assets/icons/ic_star_grey.png';
+
 const String iconPhoto = 'assets/icons/icon_photo.png';
 const String iconCamera = 'assets/icons/icon_camera.png';
 const String iconBox = 'assets/icons/icon_box.png';
@@ -54,6 +61,8 @@ const String imageLoading = 'assets/images/img_loading.gif';
 const String iconExclamationMark = 'assets/icons/ic_exclamation_mark.png';
 const String iconEye = 'assets/icons/ic_eye.png';
 const String iconEyeOff = 'assets/icons/ic_eye_splash.png';
+
+const String iconRemove = 'assets/icons/ic_remove.png';
 
 //Nunmber
 const DELAY_50_MS = 50;
@@ -82,6 +91,11 @@ final Widget dividerThinkness6NotMargin = Container(
   color: backgroundDetails,
 );
 
+final dividerColorGrey2 = Container(
+  height: .5.sp,
+  color: Color(0xFFACACB9),
+);
+
 final Divider dividerChat = Divider(
   color: colorPrimary,
   thickness: 0.3.sp,
@@ -97,6 +111,8 @@ const CONNECT_TIME_OUT = 5000;
 const RECEIVE_TIME_OUT = 5000;
 const LIMIT_RESPONSE_TIME = 200;
 
+const INCH_TO_DP = 160;
+
 // String Constants
 const MODE_DEV = 'DEV';
 const MODE_PRODUCTION = 'PRODUCTION';
@@ -107,3 +123,9 @@ const GET = 'GET';
 const PUT = 'PUT';
 const DELETE = 'DELETE';
 const PATCH = 'PATCH';
+
+// 'url'
+const HTTP_URL = 'http://';
+const HTTPS_URL = 'https://';
+const URL_VNPAY = 'https://evening-mountain-96387.herokuapp.com';
+const VNPAY_SUCCESS = 'thanh-toan/thanh-cong';

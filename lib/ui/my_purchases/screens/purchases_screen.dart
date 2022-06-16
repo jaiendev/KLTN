@@ -4,7 +4,7 @@
 // import 'package:app_kltn_trunghoan/models/order_model.dart';
 // import 'package:app_kltn_trunghoan/ui/my_purchases/widgets/order_card.dart';
 // import 'package:flutter/material.dart';
-// import 'package:sizer/sizer.dart';
+// import 'package:app_kltn_trunghoan/helpers/sizer_custom/sizer.dart';
 
 // class PurchasesScreen extends StatefulWidget {
 //   final int tabNumber;

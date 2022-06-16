@@ -1,36 +1,6 @@
 import 'dart:convert';
 
-// import 'package:app_kltn_trunghoan/constants/constants.dart';
-
-// class ProductModel {
-//   final String title;
-//   final String type;
-//   final double cost;
-//   final String urlToImage;
-//   final String description;
-//   ProductModel({
-//     required this.title,
-//     required this.type,
-//     this.cost = 250,
-//     this.urlToImage = urlImageProduct,
-//     this.description = descriptionProductFake,
-//   });
-// }
-
-// List<ProductModel> productList = [
-//   ProductModel(title: 'Màn hình Dell S2421H 23.8 inch 70X9V1', type: 'Screen'),
-//   ProductModel(
-//     title: 'Màn hình Dell S2421H 23.8 inch 70X9V1',
-//     type: 'Screen',
-//     urlToImage: urlImageProduct2,
-//   ),
-//   ProductModel(title: 'Màn hình Dell S2421H 23.8 inch 70X9V1', type: 'Screen'),
-//   ProductModel(title: 'Màn hình Dell S2421H 23.8 inch 70X9V1', type: 'Screen'),
-//   ProductModel(title: 'Màn hình Dell S2421H 23.8 inch 70X9V1', type: 'Screen'),
-// ];
-
-// const String descriptionProductFake =
-//     'Dell S2421H 23.8 inch 70X9V1 has an elegant, modern design with a display that sinks behind the screen for a unique beauty. The shape has a full HD parse (1920x1080) allowing you to enjoy clear and detailed images.';
+import 'package:app_kltn_trunghoan/helpers/extentions/strings_extentions.dart';
 
 class ProductModel {
   final String id;
@@ -40,8 +10,9 @@ class ProductModel {
   final String? description;
   final String? productPicture;
   final int? ratingsQuantity;
-  final int? ratuingAverage;
-  final String? categoy;
+  final double ratingAverage;
+  final String? category;
+  final String? categoryName;
   DateTime? createBy;
   DateTime? createdAt;
   DateTime? updateAt;
@@ -53,11 +24,12 @@ class ProductModel {
     this.description,
     this.productPicture,
     this.ratingsQuantity,
-    this.ratuingAverage,
-    this.categoy,
+    this.ratingAverage = 0.0,
+    this.category,
     this.createBy,
     this.createdAt,
     this.updateAt,
+    this.categoryName,
   });
 
   ProductModel copyWith({
@@ -68,11 +40,12 @@ class ProductModel {
     String? description,
     String? productPicture,
     int? ratingsQuantity,
-    int? ratuingAverage,
+    double? ratingAverage,
     String? categoy,
     DateTime? createBy,
     DateTime? createdAt,
     DateTime? updateAt,
+    String? categoryName,
   }) {
     return ProductModel(
       id: id ?? this.id,
@@ -82,11 +55,12 @@ class ProductModel {
       description: description ?? this.description,
       productPicture: productPicture ?? this.productPicture,
       ratingsQuantity: ratingsQuantity ?? this.ratingsQuantity,
-      ratuingAverage: ratuingAverage ?? this.ratuingAverage,
-      categoy: categoy ?? this.categoy,
+      ratingAverage: ratingAverage ?? this.ratingAverage,
+      category: categoy ?? this.category,
       createBy: createBy ?? this.createBy,
       createdAt: createdAt ?? this.createdAt,
       updateAt: updateAt ?? this.updateAt,
+      categoryName: categoryName ?? this.categoryName,
     );
   }
 
@@ -99,11 +73,12 @@ class ProductModel {
       'description': description,
       'productPicture': productPicture,
       'ratingsQuantity': ratingsQuantity,
-      'ratuingAverage': ratuingAverage,
-      'categoy': categoy,
+      'ratuingAverage': ratingAverage,
+      'categoy': category,
       'createBy': createBy?.millisecondsSinceEpoch,
       'createdAt': createdAt?.millisecondsSinceEpoch,
       'updateAt': updateAt?.millisecondsSinceEpoch,
+      'categoryName': categoryName,
     };
   }
 
@@ -116,17 +91,18 @@ class ProductModel {
       description: map['description'],
       productPicture: map['productPicture'],
       ratingsQuantity: map['ratingsQuantity']?.toInt(),
-      ratuingAverage: map['ratuingAverage']?.toInt(),
-      categoy: map['categoy'],
+      ratingAverage: map['ratingsAverage']?.toDouble(),
+      category: map['category']?['_id'] ?? '',
       createBy: map['createBy'] != null
-          ? DateTime.fromMillisecondsSinceEpoch(map['createBy'])
+          ? DateTime.parse(map['createBy']).toLocal()
           : null,
       createdAt: map['createdAt'] != null
-          ? DateTime.fromMillisecondsSinceEpoch(map['createdAt'])
+          ? DateTime.parse(map['createdAt']).toLocal()
           : null,
       updateAt: map['updateAt'] != null
-          ? DateTime.fromMillisecondsSinceEpoch(map['updateAt'])
+          ? DateTime.parse(map['updateAt']).toLocal()
           : null,
+      categoryName: map['category']?['name'] ?? '',
     );
   }
 
@@ -137,7 +113,7 @@ class ProductModel {
 
   @override
   String toString() {
-    return 'ProductModel(id: $id, name: $name, slug: $slug, price: $price, description: $description, productPicture: $productPicture, ratingsQuantity: $ratingsQuantity, ratuingAverage: $ratuingAverage, categoy: $categoy, createBy: $createBy, createdAt: $createdAt, updateAt: $updateAt)';
+    return 'ProductModel(id: $id, name: $name, slug: $slug, price: $price, description: $description, productPicture: $productPicture, ratingsQuantity: $ratingsQuantity, ratingAverage: $ratingAverage, categoy: $category, createBy: $createBy, createdAt: $createdAt, updateAt: $updateAt)';
   }
 
   @override
@@ -152,8 +128,8 @@ class ProductModel {
         other.description == description &&
         other.productPicture == productPicture &&
         other.ratingsQuantity == ratingsQuantity &&
-        other.ratuingAverage == ratuingAverage &&
-        other.categoy == categoy &&
+        other.ratingAverage == ratingAverage &&
+        other.category == category &&
         other.createBy == createBy &&
         other.createdAt == createdAt &&
         other.updateAt == updateAt;
@@ -168,10 +144,14 @@ class ProductModel {
         description.hashCode ^
         productPicture.hashCode ^
         ratingsQuantity.hashCode ^
-        ratuingAverage.hashCode ^
-        categoy.hashCode ^
+        ratingAverage.hashCode ^
+        category.hashCode ^
         createBy.hashCode ^
         createdAt.hashCode ^
         updateAt.hashCode;
+  }
+
+  String get costString {
+    return price.toStringAsFixed(0).formatMoney() + 'đ';
   }
 }

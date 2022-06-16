@@ -2,7 +2,7 @@ import 'package:app_kltn_trunghoan/common/widgets/button_pop_dialog.dart';
 import 'package:app_kltn_trunghoan/constants/constants.dart';
 
 import 'package:flutter/material.dart';
-import 'package:sizer/sizer.dart';
+import 'package:app_kltn_trunghoan/helpers/sizer_custom/sizer.dart';
 
 class DialogWithTextAndPopButton extends StatelessWidget {
   const DialogWithTextAndPopButton(
@@ -107,7 +107,7 @@ class DialogWithTextAndPopButton extends StatelessWidget {
           ),
           dividerDialog,
           ButtonPopDialog(
-            text: buttonText ?? 'Understood',
+            text: buttonText ?? 'Đã hiểu',
             route: route,
           ),
         ],

@@ -4,6 +4,8 @@ import 'package:app_kltn_trunghoan/bloc/authenication/authenication_bloc.dart';
 
 import 'package:app_kltn_trunghoan/constants/constants.dart';
 import 'package:app_kltn_trunghoan/helpers/device_orientation_helper.dart';
+import 'package:app_kltn_trunghoan/helpers/logger.dart';
+import 'package:app_kltn_trunghoan/helpers/sizer_custom/sizer.dart';
 import 'package:app_kltn_trunghoan/home.dart';
 import 'package:app_kltn_trunghoan/routes/app_pages.dart';
 import 'package:app_kltn_trunghoan/routes/app_routes.dart';
@@ -11,13 +13,35 @@ import 'package:app_kltn_trunghoan/routes/scaffold_wrapper.dart';
 import 'package:app_kltn_trunghoan/ui/home/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sizer/sizer.dart';
 
 import 'bloc/application/bloc.dart';
+
 import 'routes/app_navigator_observer.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  Bloc.observer = AppBlocObserver();
   runApp(const MyApp());
+}
+
+class AppBlocObserver extends BlocObserver {
+  @override
+  void onEvent(Bloc bloc, Object? event) {
+    UtilLogger.log('BLOC EVENT', event);
+    super.onEvent(bloc, event);
+  }
+
+  @override
+  void onError(BlocBase bloc, Object error, StackTrace stackTrace) {
+    UtilLogger.log('BLOC ERROR', error);
+    super.onError(bloc, error, stackTrace);
+  }
+
+  @override
+  void onTransition(Bloc bloc, Transition transition) {
+    UtilLogger.log('BLOC TRANSITION', transition.event);
+    super.onTransition(bloc, transition);
+  }
 }
 
 class MyApp extends StatefulWidget {

@@ -14,7 +14,7 @@ import 'package:app_kltn_trunghoan/routes/app_pages.dart';
 import 'package:app_kltn_trunghoan/routes/app_routes.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:sizer/sizer.dart';
+import 'package:app_kltn_trunghoan/helpers/sizer_custom/sizer.dart';
 
 part 'authenication_event.dart';
 part 'authenication_state.dart';
@@ -183,6 +183,7 @@ class AuthenicationBloc extends Bloc<AuthenicationEvent, AuthenicationState> {
   Future<void> _handleLogOut() async {
     UserLocal().clearAccessToken();
     AppBloc.cleanBloc();
+    AppBloc.initialHomeBloc();
     AppNavigator.popUntil(Routes.HOME);
   }
 }

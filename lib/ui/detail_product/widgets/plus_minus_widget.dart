@@ -2,17 +2,23 @@ import 'package:app_kltn_trunghoan/common/widgets/touchable_opacity.dart';
 import 'package:app_kltn_trunghoan/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
-import 'package:sizer/sizer.dart';
+import 'package:app_kltn_trunghoan/helpers/sizer_custom/sizer.dart';
 
+// ignore: must_be_immutable
 class PlusMinusWidget extends StatefulWidget {
-  PlusMinusWidget({Key? key}) : super(key: key);
-
+  int count;
+  final Function onTapAdd;
+  final Function onTapSub;
+  PlusMinusWidget({
+    required this.count,
+    required this.onTapAdd,
+    required this.onTapSub,
+  });
   @override
   State<PlusMinusWidget> createState() => _PlusMinusWidgetState();
 }
 
 class _PlusMinusWidgetState extends State<PlusMinusWidget> {
-  int index = 1;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -25,11 +31,7 @@ class _PlusMinusWidgetState extends State<PlusMinusWidget> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           TouchableOpacity(
-            onTap: () {
-              setState(() {
-                index++;
-              });
-            },
+            onTap: widget.onTapAdd,
             child: Container(
               padding: EdgeInsets.all(3.sp),
               decoration: BoxDecoration(
@@ -44,7 +46,7 @@ class _PlusMinusWidgetState extends State<PlusMinusWidget> {
           ),
           SizedBox(width: 10.sp),
           Text(
-            '${index}',
+            '${widget.count}',
             style: TextStyle(
               color: Colors.white,
               fontSize: 13.sp,
@@ -52,13 +54,7 @@ class _PlusMinusWidgetState extends State<PlusMinusWidget> {
           ),
           SizedBox(width: 10.sp),
           TouchableOpacity(
-            onTap: () {
-              setState(() {
-                if (index > 1) {
-                  index--;
-                }
-              });
-            },
+            onTap: widget.onTapSub,
             child: Container(
               padding: EdgeInsets.all(3.sp),
               decoration: BoxDecoration(

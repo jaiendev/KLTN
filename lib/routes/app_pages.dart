@@ -9,11 +9,14 @@ import 'package:app_kltn_trunghoan/ui/authenication/screens/login_screen.dart';
 import 'package:app_kltn_trunghoan/ui/authenication/screens/register_screen.dart';
 import 'package:app_kltn_trunghoan/ui/cart/screens/cart_screen.dart';
 import 'package:app_kltn_trunghoan/ui/change_password/screens/change_password_screen.dart';
+import 'package:app_kltn_trunghoan/ui/detail_product/screens/create_rating_screen.dart';
 import 'package:app_kltn_trunghoan/ui/detail_product/screens/detail_product_screen.dart';
 import 'package:app_kltn_trunghoan/ui/edit_profile/screens/edit_profile_screen.dart';
 import 'package:app_kltn_trunghoan/ui/favorite_product/screens/favorite_product_screen.dart';
 import 'package:app_kltn_trunghoan/ui/filter_product/screens/filter_product_screen.dart';
 import 'package:app_kltn_trunghoan/ui/my_purchases/screens/my_purchases_screen.dart';
+import 'package:app_kltn_trunghoan/ui/payment/screens/payment_result.dart';
+import 'package:app_kltn_trunghoan/ui/payment/screens/web_view_vnpay.dart';
 import 'package:app_kltn_trunghoan/ui/started_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -63,7 +66,9 @@ class AppNavigator extends RouteObserver<PageRoute<dynamic>> {
       case Routes.FILTER_PRODUCT:
         return _buildRoute(
           settings,
-          FilterProductScreen(),
+          FilterProductScreen(
+            categoryHomeModel: arguments?['categoryHomeModel'],
+          ),
         );
       case Routes.EDIT_PROFILE:
         return _buildRoute(
@@ -84,6 +89,32 @@ class AppNavigator extends RouteObserver<PageRoute<dynamic>> {
         return _buildRoute(
           settings,
           MyPurchasesScreen(),
+        );
+
+      case Routes.CREATE_RATING:
+        return _buildRoute(
+          settings,
+          CreateRatingScreen(
+            productId: arguments?['productId'],
+            ratingModel: arguments?['ratingModel'],
+          ),
+        );
+
+      case Routes.PAYMENT_VNPAY:
+        return _buildRoute(
+          settings,
+          WebViewPaymentScreen(
+            url: arguments?['url'],
+            onPaymentDone: arguments?['onPaymentDone'],
+          ),
+        );
+      case Routes.PAYMENT_RESULT:
+        return _buildRoute(
+          settings,
+          PaymentResultScreen(
+            isSuccess: arguments?['isSuccess'],
+            isCheckChatScreen: arguments?['isCheckChatScreen'] ?? false,
+          ),
         );
 
       default:

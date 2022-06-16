@@ -1,9 +1,6 @@
 class StorageKey {
   // Box
-  static const String BOX_USER = "box_user";
-  static const String BOX_REQUEST = "box_request";
-  static const String BOX_MESSAGE = "box_message";
-  static const String BOX_SEARCH = 'box_search';
+  static const String BOX_USER = "box_users";
 
   // In Box - User
   static const String TOKEN = "token";

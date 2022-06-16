@@ -1,8 +1,13 @@
 import 'package:app_kltn_trunghoan/bloc/app_state/bloc.dart';
 import 'package:app_kltn_trunghoan/bloc/application/application_bloc.dart';
 import 'package:app_kltn_trunghoan/bloc/authenication/authenication_bloc.dart';
+import 'package:app_kltn_trunghoan/bloc/cart/cart_bloc.dart';
+import 'package:app_kltn_trunghoan/bloc/category/category_bloc.dart';
 import 'package:app_kltn_trunghoan/bloc/home/home_bloc.dart';
+import 'package:app_kltn_trunghoan/bloc/product/product_bloc.dart';
+import 'package:app_kltn_trunghoan/bloc/rating/rating_bloc.dart';
 import 'package:app_kltn_trunghoan/bloc/timer/timer_bloc.dart';
+import 'package:app_kltn_trunghoan/bloc/user/user_bloc.dart';
 import 'package:app_kltn_trunghoan/data/local_data_source/user_local_data.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -12,6 +17,11 @@ class AppBloc {
   static final applicationBloc = ApplicationBloc();
   static final authBloc = AuthenicationBloc();
   static final timerBloc = TimerBloc();
+  static final productBloc = ProductBloc();
+  static final cartBloc = CartBloc();
+  static final ratingBloc = RatingBloc();
+  static final userBloc = UserBloc();
+  static final categoryBloc = CategoryBloc();
 
   static final List<BlocProvider> providers = [
     BlocProvider<HomeBloc>(
@@ -29,6 +39,21 @@ class AppBloc {
     BlocProvider<TimerBloc>(
       create: (context) => timerBloc,
     ),
+    BlocProvider<ProductBloc>(
+      create: (context) => productBloc,
+    ),
+    BlocProvider<CartBloc>(
+      create: (context) => cartBloc,
+    ),
+    BlocProvider<RatingBloc>(
+      create: (context) => ratingBloc,
+    ),
+    BlocProvider<UserBloc>(
+      create: (context) => userBloc,
+    ),
+    BlocProvider<CategoryBloc>(
+      create: (context) => categoryBloc,
+    ),
   ];
 
   static void dispose() {
@@ -37,6 +62,11 @@ class AppBloc {
     applicationBloc.close();
     authBloc.close();
     timerBloc.close();
+    productBloc.close();
+    cartBloc.close();
+    ratingBloc.close();
+    userBloc.close();
+    categoryBloc.close();
   }
 
   static void initialHomeBloc() {
@@ -47,6 +77,9 @@ class AppBloc {
   }
 
   static void initialHomeBlocWithoutAuth() {
+    productBloc.add(
+        OnProductCategoryHomeEvent(idCategory: '61a8a5c663bfc4c3df6b3c3c'));
+    categoryBloc.add(GetCategoryEvent());
     // hotSearchBloc.add(GetHotSearchEvent());
     // categoryBloc.add(OnCategoriesEvent());
     // categoryHomeBloc.add(OnCategoryHomeEvent());
@@ -55,6 +88,7 @@ class AppBloc {
   }
 
   static void initialHomeBlocWithAuth() {
+    cartBloc.add(GetCartUserEvent());
     // userBloc.add(GetUserInfo());
     // badgesBloc.add(GetBadgesChatEvent());
     // chatBloc.add(OnChatEvent());
@@ -67,6 +101,10 @@ class AppBloc {
 
   static void cleanBloc() {
     homeBloc.add(OnChangeIndexEvent());
+    productBloc.add(ClearProductCategoryEvent());
+    cartBloc.add(CleanCartUserEvent());
+    ratingBloc.add(CleanRatingEvent());
+    categoryBloc.add(CleanCategoryEvnet());
   }
 
   ///Singleton factory

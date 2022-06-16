@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:app_kltn_trunghoan/models/card_model.dart';
+import 'package:app_kltn_trunghoan/models/cart_model.dart';
 import 'package:flutter/foundation.dart';
 
 import 'package:app_kltn_trunghoan/models/puchasing_model.dart';
@@ -9,9 +9,9 @@ class AccountModel {
   final String id;
   String name;
   final String email;
-  final String photo;
-  final String address;
-  final String phone;
+  String photo;
+  String address;
+  String phone;
   final String gender;
   final String role;
   final List<PurchasingModel>? purchasingHistory;
@@ -90,10 +90,7 @@ class AccountModel {
           : (map['purchasingHistory'] as List<dynamic>)
               .map((offer) => PurchasingModel.fromMap(offer))
               .toList(),
-      // cart: map['cart']['items'] != null
-      //     ? List<CartModel>.from((map['cart']['items'])
-      //         .map((product) => CartModel.fromMap(product)))
-      //     : null,
+      cart: null,
     );
   }
 

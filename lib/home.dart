@@ -9,7 +9,7 @@ import 'package:app_kltn_trunghoan/ui/profile/screens/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
-import 'package:sizer/sizer.dart';
+import 'package:app_kltn_trunghoan/helpers/sizer_custom/sizer.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -27,6 +27,7 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
+    AppBloc.initialHomeBloc();
   }
 
   @override

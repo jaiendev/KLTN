@@ -2,7 +2,7 @@ import 'package:app_kltn_trunghoan/common/widgets/title_and_seemore.dart';
 import 'package:app_kltn_trunghoan/models/category_model.dart';
 import 'package:app_kltn_trunghoan/ui/home/widgets/categories_home_card.dart';
 import 'package:flutter/material.dart';
-import 'package:sizer/sizer.dart';
+import 'package:app_kltn_trunghoan/helpers/sizer_custom/sizer.dart';
 
 class CategoriesHome extends StatefulWidget {
   const CategoriesHome({Key? key}) : super(key: key);
@@ -39,17 +39,21 @@ class _CategoriesHomeState extends State<CategoriesHome> {
                   title: listCategories[index].title,
                   isCheck: listCategories[index].isCheck,
                   onHandlePressed: () {
-                    setState(() {
-                      if (!listCategories[index].isCheck) {
-                        listCategories[index].isCheck =
-                            !listCategories[index].isCheck;
-                        listCategories.asMap().forEach((i, bool) {
-                          if (i != index) {
-                            listCategories[i].isCheck = false;
-                          }
-                        });
-                      }
-                    });
+                    setState(
+                      () {
+                        if (!listCategories[index].isCheck) {
+                          listCategories[index].isCheck =
+                              !listCategories[index].isCheck;
+                          listCategories.asMap().forEach(
+                            (i, bool) {
+                              if (i != index) {
+                                listCategories[i].isCheck = false;
+                              }
+                            },
+                          );
+                        }
+                      },
+                    );
                   },
                 );
               },

@@ -10,7 +10,7 @@ import 'package:app_kltn_trunghoan/helpers/utils/validator_utils.dart';
 import 'package:app_kltn_trunghoan/models/account_remember.dart';
 import 'package:app_kltn_trunghoan/routes/app_pages.dart';
 import 'package:flutter/material.dart';
-import 'package:sizer/sizer.dart';
+import 'package:app_kltn_trunghoan/helpers/sizer_custom/sizer.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);

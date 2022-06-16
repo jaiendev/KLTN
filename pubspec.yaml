@@ -39,6 +39,7 @@ dependencies:
   #Core
   flutter_bloc: ^7.3.3
   hive: ^2.0.5
+  intl: ^0.17.0
 
    # Network
   connectivity: ^3.0.6
@@ -46,6 +47,7 @@ dependencies:
   dio: ^4.0.1
   url_launcher: ^6.0.10
   webview_flutter: ^2.0.12
+  flutter_html: ^2.2.1
 
 
  

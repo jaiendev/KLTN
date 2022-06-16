@@ -1,12 +1,26 @@
+import 'package:app_kltn_trunghoan/common/widgets/custom_image/network_image/cached_image.dart';
 import 'package:app_kltn_trunghoan/constants/constants.dart';
+import 'package:app_kltn_trunghoan/models/cart_model.dart';
 import 'package:app_kltn_trunghoan/ui/cart/widgets/button_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
-import 'package:sizer/sizer.dart';
+import 'package:app_kltn_trunghoan/helpers/sizer_custom/sizer.dart';
 
-class CartCard extends StatelessWidget {
-  const CartCard({Key? key}) : super(key: key);
+class CartCard extends StatefulWidget {
+  final CartModel cartModel;
+  final Function onTapPlus;
+  final Function onTapSub;
+  const CartCard({
+    required this.cartModel,
+    required this.onTapPlus,
+    required this.onTapSub,
+  });
 
+  @override
+  State<CartCard> createState() => _CartCardState();
+}
+
+class _CartCardState extends State<CartCard> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -32,11 +46,11 @@ class CartCard extends StatelessWidget {
                         ],
                       ),
                       padding: EdgeInsets.all(15.sp),
-                      child: Image.asset(
-                        productFake,
+                      child: CustomNetworkImage(
+                        urlToImage: widget.cartModel.productPicture,
+                        shape: BoxShape.rectangle,
                         height: 38.sp,
                         width: 38.sp,
-                        fit: BoxFit.cover,
                       ),
                     ),
                     SizedBox(width: 10.sp),
@@ -44,17 +58,21 @@ class CartCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Text(
-                          'Màn hình Dell U3219Q',
-                          style: TextStyle(
-                            color: colorPrimary,
-                            fontSize: 13.sp,
-                            fontWeight: FontWeight.w700,
+                        Container(
+                          width: 50.w,
+                          child: Text(
+                            widget.cartModel.productName.trim(),
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              color: colorPrimary,
+                              fontSize: 13.sp,
+                              fontWeight: FontWeight.w700,
+                            ),
                           ),
                         ),
                         SizedBox(height: 3.sp),
                         Text(
-                          'Screen',
+                          '',
                           style: TextStyle(
                             color: colorGray1,
                             fontSize: 12.sp,
@@ -62,7 +80,7 @@ class CartCard extends StatelessWidget {
                         ),
                         SizedBox(height: 3.sp),
                         Text(
-                          '\$19.98',
+                          '${widget.cartModel.costString}',
                           style: TextStyle(
                             color: colorPrimary,
                             fontSize: 12.sp,
@@ -86,15 +104,17 @@ class CartCard extends StatelessWidget {
                       icon: PhosphorIcons.minus_light,
                       backgroundColor: Colors.white,
                       iconColor: colorPrimary,
+                      onTap: widget.onTapSub,
                     ),
                     SizedBox(width: 5.sp),
                     Text(
-                      '1',
+                      '${widget.cartModel.qty}',
                       style: TextStyle(color: colorPrimary, fontSize: 12.sp),
                     ),
                     SizedBox(width: 5.sp),
                     ButtonPlus(
                       icon: PhosphorIcons.plus_light,
+                      onTap: widget.onTapPlus,
                     ),
                   ],
                 ),

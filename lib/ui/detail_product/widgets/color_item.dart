@@ -1,6 +1,6 @@
 import 'package:app_kltn_trunghoan/common/widgets/touchable_opacity.dart';
 import 'package:flutter/material.dart';
-import 'package:sizer/sizer.dart';
+import 'package:app_kltn_trunghoan/helpers/sizer_custom/sizer.dart';
 
 class ColorItem extends StatelessWidget {
   final Color color;

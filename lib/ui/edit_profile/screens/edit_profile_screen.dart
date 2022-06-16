@@ -1,15 +1,19 @@
 import 'dart:io';
 
+import 'package:app_kltn_trunghoan/bloc/app_bloc.dart';
+import 'package:app_kltn_trunghoan/bloc/user/user_bloc.dart';
 import 'package:app_kltn_trunghoan/common/widgets/appbars/appbar_title_back.dart';
 import 'package:app_kltn_trunghoan/common/widgets/custom_image/custom_image_picker.dart';
 import 'package:app_kltn_trunghoan/common/widgets/custom_image/network_image/cached_image.dart';
+import 'package:app_kltn_trunghoan/common/widgets/dialogs/dialog_loading.dart';
 import 'package:app_kltn_trunghoan/common/widgets/text_field_form.dart';
 import 'package:app_kltn_trunghoan/common/widgets/touchable_opacity.dart';
 import 'package:app_kltn_trunghoan/constants/constants.dart';
+import 'package:app_kltn_trunghoan/models/account_model.dart';
 import 'package:app_kltn_trunghoan/ui/edit_profile/widgets/title_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
-import 'package:sizer/sizer.dart';
+import 'package:app_kltn_trunghoan/helpers/sizer_custom/sizer.dart';
 
 class EditProfileScreen extends StatefulWidget {
   @override
@@ -19,12 +23,38 @@ class EditProfileScreen extends StatefulWidget {
 class _EditProfileScreenState extends State<EditProfileScreen> {
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController _locationController = TextEditingController();
-  String? _textFullname;
+  TextEditingController _nameController = TextEditingController();
+  TextEditingController _phoneController = TextEditingController();
+  TextEditingController _emailController = TextEditingController();
+  String urlImage = '';
   File? _imagePicked;
 
   @override
   void initState() {
     super.initState();
+    AccountModel accountModel = AppBloc.userBloc.accountModel;
+
+    _nameController.text = accountModel.name;
+    _locationController.text = accountModel.address;
+    _phoneController.text = accountModel.phone;
+    _emailController.text = accountModel.email;
+    urlImage = accountModel.photo;
+  }
+
+  Future<void> _trySubmitForm() async {
+    if (_formKey.currentState!.validate()) {
+      AccountModel accountModel = AppBloc.userBloc.accountModel;
+      showDialogLoading();
+      if (_imagePicked != null) {
+        AppBloc.userBloc.add(
+          UpdateUser(accountModel: accountModel),
+        );
+      } else {
+        AppBloc.userBloc.add(
+          UpdateUser(accountModel: accountModel),
+        );
+      }
+    }
   }
 
   @override
@@ -127,17 +157,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                       margin: EdgeInsets.symmetric(
                                         vertical: 16.sp,
                                       ),
-                                      urlToImage: urlImageMan,
+                                      urlToImage: urlImage,
                                     ),
                                     Positioned(
                                       bottom: 24.sp,
                                       right: 4.sp,
                                       child: TouchableOpacity(
                                         onTap: () {
-                                          // CustomImagePicker().openImagePicker(
-                                          //   context: context,
-                                          //   handleFinish: _handlePickImage,
-                                          // );
+                                          CustomImagePicker().openImagePicker(
+                                            context: context,
+                                            handleFinish: _handlePickImage,
+                                          );
                                         },
                                         child: Container(
                                           padding: EdgeInsets.all(3.sp),
@@ -168,63 +198,36 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                 padding: EdgeInsets.zero,
                               ),
                               TextFieldForm(
-                                initialValue: 'Edward Larry',
+                                controller: _nameController,
                                 validatorForm: null,
-                                onChanged: (val) =>
-                                    _textFullname = val.toString().trim(),
+                                onChanged: (val) {},
                               ),
                               TitleTextField(title: 'Address'),
                               TextFieldForm(
-                                onTap: () {
-                                  showModalBottomSheet(
-                                    isScrollControlled: true,
-                                    context: context,
-                                    backgroundColor: Colors.transparent,
-                                    builder: (context) {
-                                      // return BottomSheetProvince(
-                                      //   province: _locationController.text,
-                                      //   handPressed: (value) {
-                                      //     setState(() {
-                                      //       _textProvince = ProvinceHelper()
-                                      //           .getCodeByProvince(value!)!;
-                                      //       _locationController.text =
-                                      //           ProvinceHelper().getProvinceByCode(
-                                      //               _textProvince!)!;
-                                      //     });
-                                      //   },
-                                      // );
-                                      return Container();
-                                    },
-                                  );
-                                },
-                                readOnly: true,
-                                initialValue: '',
                                 controller: _locationController,
-                                suffixIcon: Icon(
-                                  PhosphorIcons.caret_down_light,
-                                  size: 15.sp,
-                                ),
                                 validatorForm: null,
+                                onChanged: (val) {},
                               ),
+                              SizedBox(height: 10.sp),
                               TitleTextField(
                                 title: 'Email',
-                                option: 'Change Email',
-                                handlePressed: () {},
+                                padding: EdgeInsets.zero,
                               ),
                               TextFieldForm(
                                 initialValue: 'Email',
+                                controller: _emailController,
                                 validatorForm: (val) => null,
                                 isAvailable: false,
                               ),
+                              SizedBox(height: 10.sp),
                               TitleTextField(
                                 title: 'Phone',
-                                option: 'Change Phone',
-                                handlePressed: () {},
+                                padding: EdgeInsets.zero,
                               ),
                               TextFieldForm(
-                                initialValue: 'Phone',
-                                validatorForm: (val) => null,
-                                isAvailable: false,
+                                controller: _phoneController,
+                                validatorForm: null,
+                                onChanged: (val) {},
                               ),
                             ],
                           ),

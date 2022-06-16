@@ -195,20 +195,11 @@ class BaseRepository {
         });
       }
 
-      var response = Application.mode == MODE_DEV
-          ? await stopWatchApi(
-              () => dio.get(
-                    gateway,
-                    options: getOptions(),
-                    queryParameters: query == null ? null : paramsObject,
-                  ),
-              GET,
-              gateway)
-          : await dio.get(
-              gateway,
-              options: getOptions(),
-              queryParameters: query == null ? null : paramsObject,
-            );
+      var response = await dio.get(
+        gateway,
+        options: getOptions(),
+        queryParameters: query == null ? null : paramsObject,
+      );
       return response;
     } on diox.DioError catch (exception) {
       catchDioError(exception);
@@ -293,7 +284,6 @@ class BaseRepository {
   catchDioError(diox.DioError exception) {
     if (exception.type == diox.DioErrorType.connectTimeout ||
         exception.type == diox.DioErrorType.receiveTimeout) {
-      // Application().switchDomainToBackup();
       throw exception;
     }
   }

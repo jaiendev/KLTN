@@ -1,12 +1,14 @@
 import 'dart:convert';
 
+import 'package:app_kltn_trunghoan/helpers/extentions/strings_extentions.dart';
+
 class CartModel {
   final String id;
   final String productId;
   final String productName;
   final String productPicture;
-  final int qty;
-  final double price;
+  int qty;
+  int price;
   CartModel({
     required this.id,
     required this.productId,
@@ -22,7 +24,7 @@ class CartModel {
     String? productName,
     String? productPicture,
     int? qty,
-    double? price,
+    int? price,
   }) {
     return CartModel(
       id: id ?? this.id,
@@ -52,7 +54,7 @@ class CartModel {
       productName: map['productName'] ?? '',
       productPicture: map['productPicture'] ?? '',
       qty: map['qty']?.toInt() ?? 0,
-      price: map['price']?.toDouble() ?? 0.0,
+      price: map['price']?.toInt() ?? 0,
     );
   }
 
@@ -87,5 +89,9 @@ class CartModel {
         productPicture.hashCode ^
         qty.hashCode ^
         price.hashCode;
+  }
+
+  String get costString {
+    return price.toStringAsFixed(0).formatMoney() + 'đ';
   }
 }

@@ -1,22 +1,27 @@
+import 'package:app_kltn_trunghoan/common/widgets/custom_image/network_image/cached_image.dart';
 import 'package:app_kltn_trunghoan/constants/constants.dart';
 import 'package:app_kltn_trunghoan/models/category_home_model.dart';
 import 'package:app_kltn_trunghoan/routes/app_pages.dart';
 import 'package:app_kltn_trunghoan/routes/app_routes.dart';
 import 'package:flutter/material.dart';
-import 'package:sizer/sizer.dart';
+import 'package:app_kltn_trunghoan/helpers/sizer_custom/sizer.dart';
 
 class CategoryCard extends StatelessWidget {
   final CategoryHomeModel categories;
   const CategoryCard({
-    Key? key,
     required this.categories,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        AppNavigator.push(Routes.FILTER_PRODUCT);
+        AppNavigator.push(
+          Routes.FILTER_PRODUCT,
+          arguments: {
+            'categoryHomeModel': categories,
+          },
+        );
       },
       child: Container(
         decoration: BoxDecoration(
@@ -55,11 +60,11 @@ class CategoryCard extends StatelessWidget {
                     ),
                   ),
                   Center(
-                    child: Image.asset(
-                      categories.icon,
-                      fit: BoxFit.fitWidth,
-                      width: 35.sp,
+                    child: CustomNetworkImage(
+                      urlToImage: categories.imageCategory,
                       height: 35.sp,
+                      width: 35.sp,
+                      shape: BoxShape.rectangle,
                     ),
                   ),
                 ],
@@ -67,7 +72,7 @@ class CategoryCard extends StatelessWidget {
             ),
             SizedBox(height: 8.sp),
             Text(
-              categories.title,
+              categories.name,
               style: TextStyle(
                 fontSize: 12.sp,
                 color: Colors.white,

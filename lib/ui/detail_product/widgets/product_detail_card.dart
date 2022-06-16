@@ -1,8 +1,9 @@
+import 'package:app_kltn_trunghoan/common/widgets/custom_image/network_image/cached_image.dart';
 import 'package:app_kltn_trunghoan/constants/constants.dart';
 import 'package:app_kltn_trunghoan/models/product_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
-import 'package:sizer/sizer.dart';
+import 'package:app_kltn_trunghoan/helpers/sizer_custom/sizer.dart';
 
 class ProductDetailCard extends StatelessWidget {
   final ProductModel productModel;
@@ -23,17 +24,17 @@ class ProductDetailCard extends StatelessWidget {
             ),
           ),
         ),
-        // Positioned(
-        //   bottom: 10,
-        //   right: 25.w,
-        //   child: CustomNetworkImage(
-        //     urlToImage: productModel.urlToImage,
-        //     height: 45.w,
-        //     width: 45.w,
-        //     fit: BoxFit.cover,
-        //     shape: BoxShape.rectangle,
-        //   ),
-        // ),
+        Positioned(
+          bottom: 10,
+          right: 25.w,
+          child: CustomNetworkImage(
+            urlToImage: productModel.productPicture,
+            height: 45.w,
+            width: 45.w,
+            fit: BoxFit.cover,
+            shape: BoxShape.rectangle,
+          ),
+        ),
         Positioned(
           right: 16.sp,
           child: Container(
@@ -66,7 +67,7 @@ class ProductDetailCard extends StatelessWidget {
                           ),
                           SizedBox(width: 5.sp),
                           Text(
-                            '2.5',
+                            '${productModel.ratingAverage}',
                             style: TextStyle(
                               fontWeight: FontWeight.w600,
                               fontSize: 12.sp,
@@ -77,7 +78,7 @@ class ProductDetailCard extends StatelessWidget {
                       ),
                       SizedBox(height: 1.25.sp),
                       Text(
-                        '250 reviews',
+                        '${productModel.ratingsQuantity} reviews',
                         style: TextStyle(
                           fontSize: 11.5.sp,
                           color: Colors.white,
@@ -97,28 +98,28 @@ class ProductDetailCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Container(
-                //   width: 50.w,
-                //   child: Text(
-                //     productModel.title,
-                //     style: TextStyle(
-                //       height: 1.25.sp,
-                //       fontSize: 13.sp,
-                //       color: Colors.white,
-                //       fontWeight: FontWeight.w700,
-                //     ),
-                //   ),
-                // ),
-                // SizedBox(
-                //   height: 1.25.sp,
-                // ),
-                // Text(
-                //   productModel.type,
-                //   style: TextStyle(
-                //     fontSize: 13.sp,
-                //     color: Colors.white,
-                //   ),
-                // )
+                Container(
+                  width: 50.w,
+                  child: Text(
+                    productModel.name,
+                    style: TextStyle(
+                      height: 1.25.sp,
+                      fontSize: 13.sp,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 1.25.sp,
+                ),
+                Text(
+                  'Màn hình',
+                  style: TextStyle(
+                    fontSize: 13.sp,
+                    color: Colors.white,
+                  ),
+                )
               ],
             ),
           ),
