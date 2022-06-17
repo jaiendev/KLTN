@@ -1,6 +1,11 @@
+import 'package:app_kltn_trunghoan/bloc/app_bloc.dart';
+import 'package:app_kltn_trunghoan/bloc/purchases/purchases_bloc.dart';
 import 'package:app_kltn_trunghoan/common/widgets/appbars/appbar_title_back.dart';
 import 'package:app_kltn_trunghoan/constants/constants.dart';
+import 'package:app_kltn_trunghoan/models/purchase_model.dart';
+import 'package:app_kltn_trunghoan/ui/my_purchases/screens/purchases_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:app_kltn_trunghoan/helpers/sizer_custom/sizer.dart';
 
@@ -24,7 +29,7 @@ class _MyPurchasesScreenState extends State<MyPurchasesScreen>
   @override
   void initState() {
     super.initState();
-    _currentIndex = 1;
+    _currentIndex = 0;
     // AppBloc.serviceManagamentBloc
     //     .add(OnServiceEvent(status: _tabNumber[_currentIndex]));
     _tabController = TabController(
@@ -46,8 +51,8 @@ class _MyPurchasesScreenState extends State<MyPurchasesScreen>
         _currentIndex = index;
       });
 
-      // AppBloc.serviceManagamentBloc
-      //     .add(OnServiceEvent(status: _tabNumber[_currentIndex]));
+      AppBloc.purchaseBloc
+          .add(GetPurchasesStatusEvent(status: _tabNumber[_currentIndex]));
     }
   }
 
@@ -58,7 +63,7 @@ class _MyPurchasesScreenState extends State<MyPurchasesScreen>
       // resizeToAvoidBottomInset: false,
       appBar: appBarTitleBack(
         context,
-        'My Purchases',
+        'Đơn hàng của tôi',
         actions: [
           Icon(
             PhosphorIcons.magnifying_glass_light,
@@ -92,21 +97,21 @@ class _MyPurchasesScreenState extends State<MyPurchasesScreen>
               onTap: _changeTab,
               tabs: <Widget>[
                 Container(
-                  width: 60.sp,
+                  width: 90.sp,
                   child: Tab(
-                    child: Text('To Pay'),
+                    child: Text('Chờ xác nhận'),
                   ),
                 ),
                 Container(
                   width: 60.sp,
                   child: Tab(
-                    child: Text('To Ship'),
+                    child: Text('Đang giao'),
                   ),
                 ),
                 Container(
                   width: 60.sp,
                   child: Tab(
-                    child: Text('Completed'),
+                    child: Text('Đã giao'),
                   ),
                 ),
               ],
@@ -118,42 +123,41 @@ class _MyPurchasesScreenState extends State<MyPurchasesScreen>
         child: Column(
           children: [
             dividerThinkness6NotMargin,
-            // Expanded(
-            //   child: TabBarView(
-            //     physics: ClampingScrollPhysics(),
-            //     controller: _tabController,
-            //     children: <Widget>[
-            //       ..._tabNumber.map(
-            //         (tabNumber) {
-            //           // return BlocBuilder<ServiceManagamentBloc,
-            //           //     ServiceManagamentState>(
-            //           //   builder: (context, state) {
-            //           //     return state is ServiceManagamentInitial
-            //           //         ? ListView.builder(
-            //           //             physics: NeverScrollableScrollPhysics(),
-            //           //             itemCount: ITEM_COUNT_SHIMMER,
-            //           //             itemBuilder: (context, index) {
-            //           //               return ServiceShimmerCard(
-            //           //                 index: index,
-            //           //               );
-            //           //             },
-            //           //           )
-            //           //         : ServiceManagamentScreen(
-            //           //             currentState: state,
-            //           //             tabNumber: tabNumber,
-            //           //             services: state.props[0]?[tabNumber] ?? [],
-            //           //           );
-            //           //   },
-            //           // );
-            //           return PurchasesScreen(
-            //             tabNumber: tabNumber,
-            //             orderModel: listOrder,
-            //           );
-            //         },
-            //       ),
-            //     ],
-            //   ),
-            // ),
+            Expanded(
+              child: TabBarView(
+                physics: ClampingScrollPhysics(),
+                controller: _tabController,
+                children: <Widget>[
+                  ..._tabNumber.map(
+                    (tabNumber) {
+                      return BlocBuilder<PurchasesBloc, PurchasesState>(
+                        builder: (context, state) {
+                          if (state is GetDonePurchase) {
+                            List<PurchaseModel>? purchases =
+                                state.props[0] as List<PurchaseModel>?;
+                            if (purchases != null) {
+                              return PurchasesScreen(
+                                tabNumber: tabNumber,
+                                orderModel: purchases,
+                              );
+                            }
+                          }
+
+                          return ListView.builder(
+                            physics: NeverScrollableScrollPhysics(),
+                            itemCount: 4,
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                              return Container();
+                            },
+                          );
+                        },
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),

@@ -69,9 +69,9 @@ const DELAY_50_MS = 50;
 const DELAY_100_MS = 100;
 const DELAY_200_MS = 200;
 const DELAY_250_MS = 250;
-const TO_PAY = 1;
-const TO_SHIP = 2;
-const COMPLETE = 3;
+const TO_PAY = 0;
+const TO_SHIP = 1;
+const COMPLETE = 2;
 
 //data fake
 const String productFake = 'assets/images/img_product_fake.png';

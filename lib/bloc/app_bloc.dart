@@ -5,6 +5,7 @@ import 'package:app_kltn_trunghoan/bloc/cart/cart_bloc.dart';
 import 'package:app_kltn_trunghoan/bloc/category/category_bloc.dart';
 import 'package:app_kltn_trunghoan/bloc/home/home_bloc.dart';
 import 'package:app_kltn_trunghoan/bloc/product/product_bloc.dart';
+import 'package:app_kltn_trunghoan/bloc/purchases/purchases_bloc.dart';
 import 'package:app_kltn_trunghoan/bloc/rating/rating_bloc.dart';
 import 'package:app_kltn_trunghoan/bloc/timer/timer_bloc.dart';
 import 'package:app_kltn_trunghoan/bloc/user/user_bloc.dart';
@@ -22,6 +23,7 @@ class AppBloc {
   static final ratingBloc = RatingBloc();
   static final userBloc = UserBloc();
   static final categoryBloc = CategoryBloc();
+  static final purchaseBloc = PurchasesBloc();
 
   static final List<BlocProvider> providers = [
     BlocProvider<HomeBloc>(
@@ -54,6 +56,9 @@ class AppBloc {
     BlocProvider<CategoryBloc>(
       create: (context) => categoryBloc,
     ),
+    BlocProvider<PurchasesBloc>(
+      create: (context) => purchaseBloc,
+    ),
   ];
 
   static void dispose() {
@@ -67,6 +72,7 @@ class AppBloc {
     ratingBloc.close();
     userBloc.close();
     categoryBloc.close();
+    purchaseBloc.close();
   }
 
   static void initialHomeBloc() {
@@ -89,6 +95,7 @@ class AppBloc {
 
   static void initialHomeBlocWithAuth() {
     cartBloc.add(GetCartUserEvent());
+    purchaseBloc.add(GetPurchasesStatusEvent(status: 0));
     // userBloc.add(GetUserInfo());
     // badgesBloc.add(GetBadgesChatEvent());
     // chatBloc.add(OnChatEvent());
@@ -105,6 +112,7 @@ class AppBloc {
     cartBloc.add(CleanCartUserEvent());
     ratingBloc.add(CleanRatingEvent());
     categoryBloc.add(CleanCategoryEvnet());
+    purchaseBloc.add(CleanPurchasesEvent());
   }
 
   ///Singleton factory

@@ -18,4 +18,7 @@ class Endpoints {
 
   //category
   static final String CATEGORY = 'api/v1/category/getCategory';
+
+  //purchases
+  static final String PURCHASES = 'api/v1/orders/customer';
 }
