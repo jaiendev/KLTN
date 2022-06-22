@@ -9,7 +9,9 @@ import 'package:app_kltn_trunghoan/common/widgets/dialogs/dialog_loading.dart';
 import 'package:app_kltn_trunghoan/common/widgets/text_field_form.dart';
 import 'package:app_kltn_trunghoan/common/widgets/touchable_opacity.dart';
 import 'package:app_kltn_trunghoan/constants/constants.dart';
+import 'package:app_kltn_trunghoan/data/local_data_source/user_local_data.dart';
 import 'package:app_kltn_trunghoan/models/account_model.dart';
+import 'package:app_kltn_trunghoan/service/firebase_storage/upload_image.dart';
 import 'package:app_kltn_trunghoan/ui/edit_profile/widgets/title_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
@@ -32,7 +34,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   @override
   void initState() {
     super.initState();
-    AccountModel accountModel = AppBloc.userBloc.accountModel;
+    AccountModel accountModel = AppBloc.userBloc.getAccount;
 
     _nameController.text = accountModel.name;
     _locationController.text = accountModel.address;
@@ -43,17 +45,29 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   Future<void> _trySubmitForm() async {
     if (_formKey.currentState!.validate()) {
-      AccountModel accountModel = AppBloc.userBloc.accountModel;
+      AccountModel accountModel = UserLocal().getUser();
       showDialogLoading();
+      accountModel.name = _nameController.text;
+      accountModel.address = _locationController.text;
+      accountModel.phone = _phoneController.text;
+
       if (_imagePicked != null) {
-        AppBloc.userBloc.add(
-          UpdateUser(accountModel: accountModel),
-        );
+        if (_imagePicked != null && _imagePicked!.path.isNotEmpty) {
+          String? urlToFile =
+              await StorageService().uploadFileToStorage(_imagePicked!.path);
+          if (urlToFile.isNotEmpty) {
+            accountModel.photo = urlToFile;
+            AppBloc.userBloc.add(
+              UpdateUserEvent(accountModel: accountModel),
+            );
+          }
+        }
       } else {
         AppBloc.userBloc.add(
-          UpdateUser(accountModel: accountModel),
+          UpdateUserEvent(accountModel: accountModel),
         );
       }
+      AppBloc.userBloc.add(GetInfoUserEvent(idUser: accountModel.id));
     }
   }
 
@@ -66,10 +80,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         'Edit Profile',
         brightness: Brightness.light,
         backgroundColor: colorPrimary,
+        elevation: 0.0,
         actions: [
           TouchableOpacity(
             onTap: () async {
-              // await _trySubmitForm();
+              await _trySubmitForm();
             },
             child: Container(
               alignment: Alignment.center,
@@ -127,38 +142,29 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                 },
                                 child: Stack(
                                   children: [
-                                    // _imagePicked == null
-                                    //     ? CustomNetworkImage(
-                                    //         width: 84.sp,
-                                    //         height: 84.sp,
-                                    //         margin: EdgeInsets.symmetric(
-                                    //           vertical: 16.sp,
-                                    //         ),
-                                    //         urlToImage: urlImageMan,
-                                    //       )
-                                    //     : Container(
-                                    //         width: 84.sp,
-                                    //         height: 84.sp,
-                                    //         margin: EdgeInsets.symmetric(
-                                    //           vertical: 16.sp,
-                                    //         ),
-                                    //         decoration: BoxDecoration(
-                                    //           shape: BoxShape.circle,
-                                    //           image: DecorationImage(
-                                    //             image: getImage(),
-                                    //             fit: BoxFit.cover,
-                                    //           ),
-                                    //         ),
-                                    //       ),
-
-                                    CustomNetworkImage(
-                                      width: 84.sp,
-                                      height: 84.sp,
-                                      margin: EdgeInsets.symmetric(
-                                        vertical: 16.sp,
-                                      ),
-                                      urlToImage: urlImage,
-                                    ),
+                                    _imagePicked == null
+                                        ? CustomNetworkImage(
+                                            width: 84.sp,
+                                            height: 84.sp,
+                                            margin: EdgeInsets.symmetric(
+                                              vertical: 16.sp,
+                                            ),
+                                            urlToImage: urlImage,
+                                          )
+                                        : Container(
+                                            width: 84.sp,
+                                            height: 84.sp,
+                                            margin: EdgeInsets.symmetric(
+                                              vertical: 16.sp,
+                                            ),
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              image: DecorationImage(
+                                                image: getImage(),
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                          ),
                                     Positioned(
                                       bottom: 24.sp,
                                       right: 4.sp,

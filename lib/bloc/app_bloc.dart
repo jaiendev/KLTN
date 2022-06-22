@@ -5,6 +5,7 @@ import 'package:app_kltn_trunghoan/bloc/cart/cart_bloc.dart';
 import 'package:app_kltn_trunghoan/bloc/category/category_bloc.dart';
 import 'package:app_kltn_trunghoan/bloc/home/home_bloc.dart';
 import 'package:app_kltn_trunghoan/bloc/product/product_bloc.dart';
+import 'package:app_kltn_trunghoan/bloc/product_banner/product_home_bloc.dart';
 import 'package:app_kltn_trunghoan/bloc/purchases/purchases_bloc.dart';
 import 'package:app_kltn_trunghoan/bloc/rating/rating_bloc.dart';
 import 'package:app_kltn_trunghoan/bloc/timer/timer_bloc.dart';
@@ -24,6 +25,7 @@ class AppBloc {
   static final userBloc = UserBloc();
   static final categoryBloc = CategoryBloc();
   static final purchaseBloc = PurchasesBloc();
+  static final productHomeBloc = ProductHomeBloc();
 
   static final List<BlocProvider> providers = [
     BlocProvider<HomeBloc>(
@@ -59,6 +61,9 @@ class AppBloc {
     BlocProvider<PurchasesBloc>(
       create: (context) => purchaseBloc,
     ),
+    BlocProvider<ProductHomeBloc>(
+      create: (context) => productHomeBloc,
+    ),
   ];
 
   static void dispose() {
@@ -86,16 +91,13 @@ class AppBloc {
     productBloc.add(
         OnProductCategoryHomeEvent(idCategory: '61a8a5c663bfc4c3df6b3c3c'));
     categoryBloc.add(GetCategoryEvent());
-    // hotSearchBloc.add(GetHotSearchEvent());
-    // categoryBloc.add(OnCategoriesEvent());
-    // categoryHomeBloc.add(OnCategoryHomeEvent());
-    // discoverBloc.add(OnDiscoverEvent());
-    // hotExpertHomeBloc.add(GetHotExpertEvent());
+    productHomeBloc.add(GetProductHomeEvent());
   }
 
   static void initialHomeBlocWithAuth() {
     cartBloc.add(GetCartUserEvent());
     purchaseBloc.add(GetPurchasesStatusEvent(status: 0));
+    userBloc.add(GetInfoUserEvent(idUser: UserLocal().getUser().id));
     // userBloc.add(GetUserInfo());
     // badgesBloc.add(GetBadgesChatEvent());
     // chatBloc.add(OnChatEvent());
@@ -113,6 +115,7 @@ class AppBloc {
     ratingBloc.add(CleanRatingEvent());
     categoryBloc.add(CleanCategoryEvnet());
     purchaseBloc.add(CleanPurchasesEvent());
+    userBloc.add(CleanUserEvent());
   }
 
   ///Singleton factory

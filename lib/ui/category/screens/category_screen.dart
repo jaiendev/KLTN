@@ -1,7 +1,10 @@
+import 'package:app_kltn_trunghoan/bloc/app_bloc.dart';
 import 'package:app_kltn_trunghoan/bloc/cart/cart_bloc.dart';
 import 'package:app_kltn_trunghoan/bloc/category/category_bloc.dart';
+import 'package:app_kltn_trunghoan/bloc/home/home_bloc.dart';
 import 'package:app_kltn_trunghoan/common/widgets/button_icon.dart';
 import 'package:app_kltn_trunghoan/common/widgets/custom_image/network_image/cached_image.dart';
+import 'package:app_kltn_trunghoan/common/widgets/touchable_opacity.dart';
 import 'package:app_kltn_trunghoan/constants/constants.dart';
 import 'package:app_kltn_trunghoan/data/local_data_source/user_local_data.dart';
 import 'package:app_kltn_trunghoan/models/cart_model.dart';
@@ -50,7 +53,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Category',
+                      'Danh mục',
                       style: TextStyle(
                         fontSize: 15.sp,
                         fontWeight: FontWeight.w700,
@@ -103,16 +106,25 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                     Visibility(
                                       visible:
                                           UserLocal().getAccessToken() != '',
-                                      child: Row(
-                                        children: [
-                                          SizedBox(width: 10.sp),
-                                          CustomNetworkImage(
-                                            urlToImage:
-                                                UserLocal().getUser().photo,
-                                            height: 28.sp,
-                                            width: 28.sp,
-                                          ),
-                                        ],
+                                      child: TouchableOpacity(
+                                        onTap: () {
+                                          AppBloc.homeBloc.add(
+                                            OnChangeIndexEvent(
+                                              index: 3,
+                                            ),
+                                          );
+                                        },
+                                        child: Row(
+                                          children: [
+                                            SizedBox(width: 10.sp),
+                                            CustomNetworkImage(
+                                              urlToImage:
+                                                  UserLocal().getUser().photo,
+                                              height: 28.sp,
+                                              width: 28.sp,
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     )
                                   ],
@@ -134,15 +146,25 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                 ),
                                 Visibility(
                                   visible: UserLocal().getAccessToken() != '',
-                                  child: Row(
-                                    children: [
-                                      SizedBox(width: 10.sp),
-                                      CustomNetworkImage(
-                                        urlToImage: UserLocal().getUser().photo,
-                                        height: 28.sp,
-                                        width: 28.sp,
-                                      ),
-                                    ],
+                                  child: TouchableOpacity(
+                                    onTap: () {
+                                      AppBloc.homeBloc.add(
+                                        OnChangeIndexEvent(
+                                          index: 3,
+                                        ),
+                                      );
+                                    },
+                                    child: Row(
+                                      children: [
+                                        SizedBox(width: 10.sp),
+                                        CustomNetworkImage(
+                                          urlToImage:
+                                              UserLocal().getUser().photo,
+                                          height: 28.sp,
+                                          width: 28.sp,
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 )
                               ],
@@ -182,6 +204,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                           },
                         );
                       }
+                      return SizedBox();
                     }
                     return GridView.builder(
                       padding: EdgeInsets.symmetric(

@@ -3,7 +3,7 @@ import 'package:app_kltn_trunghoan/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:app_kltn_trunghoan/helpers/sizer_custom/sizer.dart';
 
-showDialogLoading() {
+showDialogLoading({Color? color}) {
   showDialog(
     context: AppNavigator.context!,
     builder: (context) {
@@ -15,7 +15,7 @@ showDialogLoading() {
             height: 100.sp,
             width: 100.sp,
             fit: BoxFit.fitWidth,
-            color: colorPrimary,
+            color: color ?? colorPrimary,
           ),
         ),
       );

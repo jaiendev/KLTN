@@ -10,7 +10,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
   ProductBloc() : super(ProductInitial());
 
   Map<String, List<ProductModel>> productHomes = {};
-  List<ProductModel> productBanner = [];
+  bool isAscending = false;
 
   @override
   Stream<ProductState> mapEventToState(ProductEvent event) async* {
@@ -27,6 +27,22 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
       productHomes.clear();
       yield _getDoneProductCategoryHome;
     }
+
+    if (event is AscendingEvent) {
+      isAscending = event.isAscending;
+      if (!isAscending) {
+        if (productHomes[event.idCategory] != null) {
+          productHomes[event.idCategory]!
+              .sort((a, b) => a.price.compareTo(b.price));
+        }
+      } else {
+        if (productHomes[event.idCategory] != null) {
+          productHomes[event.idCategory]!
+              .sort((b, a) => a.price.compareTo(b.price));
+        }
+      }
+      yield _getDoneProductCategoryHome;
+    }
   }
 
   //private
@@ -34,17 +50,21 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
   //     GettingProductCategoryHome(
   //         products: productHomes, productBanner: productBanner);
   GetDoneProductCategoryHome get _getDoneProductCategoryHome =>
-      GetDoneProductCategoryHome(
-          products: productHomes, productBanner: productBanner);
+      GetDoneProductCategoryHome(products: productHomes);
 
   Future<void> _getProductHome(OnProductCategoryHomeEvent event) async {
     List<ProductModel>? _products = await ProductResponsitory()
         .getProductCategoryChild(idCategory: event.idCategory);
 
-    if (_products != null) {
-      productBanner.add(_products.first);
-
+    if (_products != null && _products.isNotEmpty) {
       productHomes[event.idCategory] = _products;
+      if (!isAscending) {
+        productHomes[event.idCategory]!
+            .sort((a, b) => a.price.compareTo(b.price));
+      } else {
+        productHomes[event.idCategory]!
+            .sort((b, a) => a.price.compareTo(b.price));
+      }
     }
   }
 }

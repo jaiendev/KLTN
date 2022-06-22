@@ -1,5 +1,3 @@
-import 'package:app_kltn_trunghoan/bloc/app_bloc.dart';
-import 'package:app_kltn_trunghoan/bloc/user/user_bloc.dart';
 import 'package:app_kltn_trunghoan/constants/endpoints.dart';
 import 'package:app_kltn_trunghoan/constants/http_status_code.dart';
 import 'package:app_kltn_trunghoan/data/base_repository.dart';
@@ -30,8 +28,6 @@ class AuthRepository {
 
       UserLocal().saveAccessToken(token);
       UserLocal().saveAccount(accountModel);
-
-      AppBloc.userBloc.add(SaveUser(accountModel: accountModel));
 
       return accountModel;
     } else {
@@ -71,5 +67,18 @@ class AuthRepository {
     } else {
       return null;
     }
+  }
+
+  Future<bool> forgotPassword({
+    required String email,
+  }) async {
+    var body = {
+      'email': email,
+    };
+
+    Response response =
+        await BaseRepository().postRoute(Endpoints.FORGOT_PASSWORD, body);
+
+    return response.statusCode == StatusCode.OK;
   }
 }

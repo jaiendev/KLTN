@@ -23,6 +23,7 @@ const Color colorStar = Color(0xFFF5B353);
 const Color colorGray4 = Color(0xFFC4C4C4);
 const Color colorBlue = Color(0xFFdbf4fa);
 const Color colorBlue2 = Color(0xFF0a647a);
+const Color colorAddButton = Color(0xFFF0F6F6);
 
 ///Images
 
@@ -30,7 +31,6 @@ const String imgGoogle = 'assets/icons/ic_google.png';
 const String imgFacebook = 'assets/icons/ic_facebook.png';
 const String imgBegin2 = 'assets/images/img_begin_2.gif';
 
-const String avatarDefault = 'assets/icons/img_avatar_default.png';
 const String backgroundProduct = 'assets/images/background_product.png';
 const String imageRegisterSuccess = 'assets/images/img_register_success.png';
 
@@ -38,7 +38,7 @@ const String imageRegisterSuccess = 'assets/images/img_register_success.png';
 const PTSANS = 'PTSan';
 
 //Icons
-
+const String iconPhoto2 = 'assets/icons/ic_photo2.png';
 const String icHome = 'assets/icons/ic_home.png';
 const String icCategory = 'assets/icons/ic_category.png';
 const String icChat = 'assets/icons/ic_chat.png';
@@ -63,6 +63,10 @@ const String iconEye = 'assets/icons/ic_eye.png';
 const String iconEyeOff = 'assets/icons/ic_eye_splash.png';
 
 const String iconRemove = 'assets/icons/ic_remove.png';
+const String imgUserDefault = 'assets/images/img_user_default.png';
+
+const DELAY_HALF_SECOND = 500;
+const DURATION_DEFAULT_ANIMATION = 300;
 
 //Nunmber
 const DELAY_50_MS = 50;

@@ -10,7 +10,7 @@ class PurchasesInitial extends PurchasesState {
 }
 
 class GetDonePurchase extends PurchasesState {
-  final List<PurchaseModel> purchases;
+  final Map<int, List<PurchaseModel>> purchases;
   GetDonePurchase({required this.purchases});
 
   @override

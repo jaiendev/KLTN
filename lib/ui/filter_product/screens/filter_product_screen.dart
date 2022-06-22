@@ -1,11 +1,16 @@
 import 'package:app_kltn_trunghoan/bloc/app_bloc.dart';
+import 'package:app_kltn_trunghoan/bloc/cart/cart_bloc.dart';
 import 'package:app_kltn_trunghoan/bloc/product/product_bloc.dart';
 import 'package:app_kltn_trunghoan/common/widgets/button_icon.dart';
+import 'package:app_kltn_trunghoan/common/widgets/empty.dart';
 import 'package:app_kltn_trunghoan/common/widgets/text_field_form.dart';
+import 'package:app_kltn_trunghoan/common/widgets/touchable_opacity.dart';
 import 'package:app_kltn_trunghoan/constants/constants.dart';
+import 'package:app_kltn_trunghoan/models/cart_model.dart';
 import 'package:app_kltn_trunghoan/models/category_home_model.dart';
 import 'package:app_kltn_trunghoan/models/product_model.dart';
 import 'package:app_kltn_trunghoan/routes/app_pages.dart';
+import 'package:app_kltn_trunghoan/routes/app_routes.dart';
 import 'package:app_kltn_trunghoan/ui/filter_product/widgets/bottom_sheet_category.dart';
 import 'package:app_kltn_trunghoan/ui/filter_product/widgets/trademark_card.dart';
 import 'package:app_kltn_trunghoan/ui/home/widgets/product_card.dart';
@@ -30,6 +35,8 @@ class _FilterProductScreenState extends State<FilterProductScreen> {
   TextEditingController _categoryController = TextEditingController();
   CategoryHomeModel? _categoryHomeModel;
   String idCategory = '';
+  bool isAscending = false;
+
   @override
   void initState() {
     super.initState();
@@ -82,10 +89,66 @@ class _FilterProductScreenState extends State<FilterProductScreen> {
                         color: colorPrimary,
                       ),
                     ),
-                    ButtonIcon(
-                      onHandlePressed: () {},
-                      icon: PhosphorIcons.shopping_cart_simple_light,
-                    )
+                    BlocBuilder<CartBloc, CartState>(
+                      builder: (context, state) {
+                        if (state is GetDoneCartUser) {
+                          List<CartModel>? carts =
+                              state.props[0] as List<CartModel>?;
+
+                          if (carts != null && carts.isNotEmpty) {
+                            return Row(
+                              children: [
+                                Stack(
+                                  children: [
+                                    ButtonIcon(
+                                      onHandlePressed: () {
+                                        AppNavigator.push(Routes.CART);
+                                      },
+                                      icon: PhosphorIcons
+                                          .shopping_cart_simple_light,
+                                    ),
+                                    Positioned(
+                                      right: 5,
+                                      top: 2,
+                                      child: Visibility(
+                                        visible: (carts.length) != 0,
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: colorPrimary,
+                                          ),
+                                          padding: EdgeInsets.all(4.sp),
+                                          child: Text(
+                                            '${carts.length}',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 8.sp,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ],
+                            );
+                          }
+                        }
+                        return Row(
+                          children: [
+                            Stack(
+                              children: [
+                                ButtonIcon(
+                                  onHandlePressed: () {},
+                                  icon:
+                                      PhosphorIcons.shopping_cart_simple_light,
+                                ),
+                              ],
+                            ),
+                          ],
+                        );
+                      },
+                    ),
                   ],
                 ),
               ),
@@ -121,12 +184,6 @@ class _FilterProductScreenState extends State<FilterProductScreen> {
                                 ),
                                 builder: (context) => BottomSheetCategory(
                                   handlePressed: (val) {
-                                    // AppBloc.suggestionBloc.add(
-                                    //   new GetSuggestionEvent(
-                                    //       fieldId:
-                                    //           _findSpecialtySlectedId(val)),
-                                    // );
-
                                     _category = val;
                                     int indexOf = AppBloc
                                         .categoryBloc.categories
@@ -170,19 +227,34 @@ class _FilterProductScreenState extends State<FilterProductScreen> {
                         SizedBox(
                           width: 10.sp,
                         ),
-                        Container(
-                          margin: EdgeInsets.only(top: 10.sp),
-                          padding: EdgeInsets.all(8.9.sp),
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              width: 0.5.sp,
-                              color: colorBorderTextField,
+                        TouchableOpacity(
+                          onTap: () {
+                            setState(() {
+                              isAscending = !isAscending;
+                              AppBloc.productBloc.add(
+                                AscendingEvent(
+                                  isAscending: isAscending,
+                                  idCategory: idCategory,
+                                ),
+                              );
+                            });
+                          },
+                          child: Container(
+                            margin: EdgeInsets.only(top: 10.sp),
+                            padding: EdgeInsets.all(8.9.sp),
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                width: 0.5.sp,
+                                color: colorBorderTextField,
+                              ),
+                              borderRadius: BorderRadius.circular(6.sp),
                             ),
-                            borderRadius: BorderRadius.circular(6.sp),
-                          ),
-                          child: Icon(
-                            PhosphorIcons.sort_ascending_light,
-                            size: 20.sp,
+                            child: Icon(
+                              !isAscending
+                                  ? PhosphorIcons.sort_descending_light
+                                  : PhosphorIcons.sort_ascending_light,
+                              size: 20.sp,
+                            ),
                           ),
                         )
                       ],
@@ -286,8 +358,13 @@ class _FilterProductScreenState extends State<FilterProductScreen> {
                           },
                         );
                       } else {
-                        return Container(
-                          child: Text('Không có sản phẩm'),
+                        return Empty(
+                          image: Image.asset(
+                            iconBox,
+                            height: 70.sp,
+                            width: 70.sp,
+                          ),
+                          text: 'Chưa có sản phẩm đúng với tiêu chí của bạn !!',
                         );
                       }
                     }

@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "61389022198",
+    "project_id": "shopphukien-cbc21",
+    "storage_bucket": "shopphukien-cbc21.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:61389022198:android:d7eb7259e7b7ab546a9dd7",
+        "android_client_info": {
+          "package_name": "com.example.app_kltn_trunghoan"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "61389022198-lf1eda78ftuc9eltugggubl4sl95gk3i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.app_kltn_trunghoan",
+            "certificate_hash": "4f81c0ba7a1cf5f5f078941c1db2d5a16a81ca04"
+          }
+        },
+        {
+          "client_id": "61389022198-ehfjgshke3at88b6ugih3a03mv8ed84i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBY_YizHCWM8YZz_rE8Xfu1i2dYOtXl1X0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "61389022198-ehfjgshke3at88b6ugih3a03mv8ed84i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

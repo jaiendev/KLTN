@@ -7,6 +7,8 @@ class Routes {
   static const STARTED = '/started';
   static const LOGIN = '/login';
   static const REGISTER = '/register';
+  static const FORGOT_PASSWORD = '/forgot_password';
+  static const EDIT_PHOTO = '/edit_photo';
 
   //Product
   static const DETAIL_PRODUCT = '/detailProduct';

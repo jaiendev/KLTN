@@ -21,7 +21,7 @@ class DefaultImage extends StatelessWidget {
       decoration: BoxDecoration(
         shape: shape,
         image: DecorationImage(
-          image: AssetImage(avatarDefault),
+          image: AssetImage(imgUserDefault),
           fit: BoxFit.fitHeight,
         ),
       ),

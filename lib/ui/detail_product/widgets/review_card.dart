@@ -1,5 +1,6 @@
 import 'package:app_kltn_trunghoan/bloc/app_bloc.dart';
 import 'package:app_kltn_trunghoan/bloc/rating/rating_bloc.dart';
+import 'package:app_kltn_trunghoan/common/widgets/custom_image/network_image/cached_image.dart';
 import 'package:app_kltn_trunghoan/common/widgets/touchable_opacity.dart';
 import 'package:app_kltn_trunghoan/constants/constants.dart';
 import 'package:app_kltn_trunghoan/data/local_data_source/user_local_data.dart';
@@ -58,6 +59,35 @@ class ReviewCard extends StatelessWidget {
             ],
           ),
           SizedBox(height: 10.sp),
+          Visibility(
+            visible: ratingModel.photoReviews.isNotEmpty,
+            child: Container(
+              height: 16.h,
+              child: ListView.builder(
+                padding: EdgeInsets.only(left: 43.sp),
+                physics: BouncingScrollPhysics(),
+                scrollDirection: Axis.horizontal,
+                itemCount: ratingModel.photoReviews.length,
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  return Container(
+                    margin: EdgeInsets.only(right: 8.sp),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(
+                        8.sp,
+                      ),
+                    ),
+                    child: CustomNetworkImage(
+                      urlToImage: ratingModel.photoReviews[index],
+                      height: 15.h,
+                      width: 15.w,
+                      shape: BoxShape.rectangle,
+                    ),
+                  );
+                },
+              ),
+            ),
+          ),
           Visibility(
             visible: ratingModel.user == UserLocal().getUser().id,
             child: Container(

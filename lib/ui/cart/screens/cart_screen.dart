@@ -34,17 +34,17 @@ class _CartScreenState extends State<CartScreen> {
   @override
   void initState() {
     super.initState();
-    _controllerAddress.text = AppBloc.userBloc.accountModel.address;
-    _controllerPhone.text = AppBloc.userBloc.accountModel.phone;
+    _controllerAddress.text = AppBloc.userBloc.getAccount.address;
+    _controllerPhone.text = AppBloc.userBloc.getAccount.phone;
   }
 
   Future<void> _trySubmitForm() async {
     final isValid = _formKey.currentState!.validate();
     if (isValid) {
-      AccountModel accountModel = AppBloc.userBloc.accountModel;
+      AccountModel accountModel = AppBloc.userBloc.getAccount;
       accountModel.phone = _controllerPhone.text;
       accountModel.address = _controllerAddress.text;
-      AppBloc.userBloc.add(UpdateUser(accountModel: accountModel));
+      AppBloc.userBloc.add(UpdateUserEvent(accountModel: accountModel));
       OrderDescriptionModel orderDescriptionModel = OrderDescriptionModel(
         userId: accountModel.id,
         shippingAddress: _controllerAddress.text,

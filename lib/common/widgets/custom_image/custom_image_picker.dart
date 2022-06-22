@@ -1,5 +1,9 @@
+import 'package:app_kltn_trunghoan/common/widgets/dialogs/dialog_loading.dart';
 import 'package:app_kltn_trunghoan/constants/constants.dart';
+import 'package:app_kltn_trunghoan/helpers/photo_helper.dart';
 import 'package:app_kltn_trunghoan/routes/app_pages.dart';
+import 'package:app_kltn_trunghoan/routes/app_routes.dart';
+import 'package:extended_image/extended_image.dart';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -26,19 +30,19 @@ class CustomImagePicker {
             source: source,
           );
           if (handleFinish != null && image != null) {
-            // if (isRequireCrop) {
-            //   AppNavigator.push(Routes.EDIT_PHOTO, arguments: {
-            //     'image': File(image.path),
-            //     'handleFinish': handleFinish,
-            //   });
-            // } else {
-            //   showDialogLoading();
-            //   File? imageReduce = await PhotoHelper().reduceSize(image.path);
-            //   if (imageReduce != null) {
-            //     handleFinish(imageReduce);
-            //     AppNavigator.pop();
-            //   }
-            // }
+            if (isRequireCrop) {
+              AppNavigator.push(Routes.EDIT_PHOTO, arguments: {
+                'image': File(image.path),
+                'handleFinish': handleFinish,
+              });
+            } else {
+              showDialogLoading();
+              File? imageReduce = await PhotoHelper().reduceSize(image.path);
+              if (imageReduce != null) {
+                handleFinish(imageReduce);
+                AppNavigator.pop();
+              }
+            }
           }
         } catch (exception) {
           print(exception);
@@ -84,7 +88,6 @@ class CustomImagePicker {
   Future openImagePicker({
     required BuildContext context,
     String text = 'Tải ảnh mới',
-    // Strings.uploadANewPhoto.i18n,
     bool isRequireCrop = true,
     Function? handleFinish,
   }) {

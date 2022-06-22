@@ -1,4 +1,5 @@
 import 'package:app_kltn_trunghoan/bloc/product/product_bloc.dart';
+import 'package:app_kltn_trunghoan/bloc/product_banner/product_home_bloc.dart';
 
 import 'package:app_kltn_trunghoan/models/product_model.dart';
 import 'package:app_kltn_trunghoan/ui/home/widgets/product_recommend_card.dart';
@@ -12,10 +13,10 @@ class ProductRecommendList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ProductBloc, ProductState>(
+    return BlocBuilder<ProductHomeBloc, ProductHomeState>(
       builder: (context, state) {
-        if (state is GetDoneProductCategoryHome) {
-          List<ProductModel>? products = state.props[1] as List<ProductModel>?;
+        if (state is GetDoneProductHome) {
+          List<ProductModel>? products = state.props[0] as List<ProductModel>?;
           if (products != null) {
             return Container(
               height: 70.sp,

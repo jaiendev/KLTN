@@ -51,7 +51,7 @@ class _LoginScreenState extends State<LoginScreen> {
       setState(() {
         _passwordVisible = _passwordVisible;
       });
-      showDialogLoading();
+      showDialogLoading(color: Colors.white);
       AppBloc.authBloc.add(
         LoginEvent(
           isRemember: _isRemember,
@@ -372,18 +372,23 @@ class _LoginScreenState extends State<LoginScreen> {
                               ],
                             ),
                             SizedBox(height: 15.sp),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Forgot your password?',
-                                  style: TextStyle(
-                                    fontSize: 13.5.sp,
-                                    color: colorBlack1,
-                                    fontWeight: FontWeight.w600,
+                            TouchableOpacity(
+                              onTap: () {
+                                AppNavigator.push(Routes.FORGOT_PASSWORD);
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Forgot your password?',
+                                    style: TextStyle(
+                                      fontSize: 13.5.sp,
+                                      color: colorBlack1,
+                                      fontWeight: FontWeight.w600,
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                             SizedBox(height: 15.sp),
                           ],

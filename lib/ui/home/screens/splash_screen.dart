@@ -1,6 +1,7 @@
 import 'package:app_kltn_trunghoan/common/widgets/appbars/appbar_none.dart';
+import 'package:app_kltn_trunghoan/constants/constants.dart';
+import 'package:app_kltn_trunghoan/helpers/sizer_custom/sizer.dart';
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -13,14 +14,20 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       appBar: appBarBrighnessDark(brightness: Brightness.light),
       body: Container(
-        width: double.infinity,
-        height: double.infinity,
+        width: 100.w,
+        height: 100.h,
         color: Colors.white,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Lottie.asset('assets/images/lottie.json'),
+            Image.asset(
+              'assets/images/flash_screen.gif',
+              height: 100.sp,
+              width: 100.sp,
+              fit: BoxFit.fitWidth,
+              color: colorPrimary,
+            )
           ],
         ),
       ),

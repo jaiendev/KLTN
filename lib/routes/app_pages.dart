@@ -5,12 +5,14 @@ import 'package:app_kltn_trunghoan/routes/app_navigator_observer.dart';
 import 'package:app_kltn_trunghoan/routes/app_routes.dart';
 import 'package:app_kltn_trunghoan/routes/scaffold_wrapper.dart';
 import 'package:app_kltn_trunghoan/routes/transition_routes.dart';
+import 'package:app_kltn_trunghoan/ui/authenication/screens/forgot_password_screen.dart';
 import 'package:app_kltn_trunghoan/ui/authenication/screens/login_screen.dart';
 import 'package:app_kltn_trunghoan/ui/authenication/screens/register_screen.dart';
 import 'package:app_kltn_trunghoan/ui/cart/screens/cart_screen.dart';
 import 'package:app_kltn_trunghoan/ui/change_password/screens/change_password_screen.dart';
 import 'package:app_kltn_trunghoan/ui/detail_product/screens/create_rating_screen.dart';
 import 'package:app_kltn_trunghoan/ui/detail_product/screens/detail_product_screen.dart';
+import 'package:app_kltn_trunghoan/ui/edit_profile/screens/edit_photo_screen.dart';
 import 'package:app_kltn_trunghoan/ui/edit_profile/screens/edit_profile_screen.dart';
 import 'package:app_kltn_trunghoan/ui/favorite_product/screens/favorite_product_screen.dart';
 import 'package:app_kltn_trunghoan/ui/filter_product/screens/filter_product_screen.dart';
@@ -88,7 +90,9 @@ class AppNavigator extends RouteObserver<PageRoute<dynamic>> {
       case Routes.MY_PURCHASES:
         return _buildRoute(
           settings,
-          MyPurchasesScreen(),
+          MyPurchasesScreen(
+            indexCurrent: arguments?['indexCurrent'],
+          ),
         );
 
       case Routes.CREATE_RATING:
@@ -116,7 +120,19 @@ class AppNavigator extends RouteObserver<PageRoute<dynamic>> {
             isCheckChatScreen: arguments?['isCheckChatScreen'] ?? false,
           ),
         );
-
+      case Routes.FORGOT_PASSWORD:
+        return _buildRoute(
+          settings,
+          ForgotPasswordScreen(),
+        );
+      case Routes.EDIT_PHOTO:
+        return _buildRoute(
+          settings,
+          EditPhotoScreen(
+            image: arguments!['image'],
+            handleFinish: arguments['handleFinish'],
+          ),
+        );
       default:
         return _buildRoute(
           settings,

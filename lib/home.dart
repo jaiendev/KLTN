@@ -2,6 +2,8 @@ import 'package:app_kltn_trunghoan/bloc/app_bloc.dart';
 import 'package:app_kltn_trunghoan/bloc/home/home_bloc.dart';
 import 'package:app_kltn_trunghoan/common/widgets/touchable_opacity.dart';
 import 'package:app_kltn_trunghoan/constants/constants.dart';
+import 'package:app_kltn_trunghoan/helpers/permission_helper.dart';
+import 'package:app_kltn_trunghoan/service/firebase_message/request_permission.dart';
 import 'package:app_kltn_trunghoan/ui/category/screens/category_screen.dart';
 import 'package:app_kltn_trunghoan/ui/chat/screens/chat_screen.dart';
 import 'package:app_kltn_trunghoan/ui/home/screens/home_screen.dart';
@@ -10,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:app_kltn_trunghoan/helpers/sizer_custom/sizer.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -28,6 +31,11 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
     AppBloc.initialHomeBloc();
+    Future.delayed(Duration(milliseconds: DELAY_HALF_SECOND), () async {
+      await requestPermission();
+      await PermissionHelper().checkPermissionAndRequest(Permission.camera);
+      await PermissionHelper().checkPermissionAndRequest(Permission.microphone);
+    });
   }
 
   @override
@@ -59,22 +67,22 @@ class _HomeState extends State<Home> {
                   _buildItemBottomBar(
                     icon: PhosphorIcons.house_light,
                     index: 0,
-                    title: 'Home',
+                    title: 'Trang chủ',
                   ),
                   _buildItemBottomBar(
                     icon: PhosphorIcons.desktop_tower_light,
                     index: 1,
-                    title: 'Catergory',
+                    title: 'Danh mục',
                   ),
                   _buildItemBottomBar(
-                    icon: PhosphorIcons.chat_circle_dots_light,
+                    icon: PhosphorIcons.bell_ringing_light,
                     index: 2,
-                    title: 'Messenger',
+                    title: 'Thông báo',
                   ),
                   _buildItemBottomBar(
                     icon: PhosphorIcons.user_circle_light,
                     index: 3,
-                    title: 'Account',
+                    title: 'Cá nhân',
                   ),
                 ],
               ),

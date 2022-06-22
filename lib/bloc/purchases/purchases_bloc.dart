@@ -9,12 +9,17 @@ part 'purchases_state.dart';
 class PurchasesBloc extends Bloc<PurchasesEvent, PurchasesState> {
   PurchasesBloc() : super(PurchasesInitial());
 
-  final List<PurchaseModel> purchases = [];
+  final Map<int, List<PurchaseModel>> purchases = {};
 
   @override
   Stream<PurchasesState> mapEventToState(PurchasesEvent event) async* {
     if (event is GetPurchasesStatusEvent) {
-      await _getPurchases(event);
+      if (purchases[event.status] == null) {
+        yield PurchasesInitial();
+
+        await _getPurchases(event);
+      }
+
       yield _getDonePurchases;
     }
   }
@@ -30,8 +35,7 @@ class PurchasesBloc extends Bloc<PurchasesEvent, PurchasesState> {
     );
 
     if (_purchases != null) {
-      purchases.clear();
-      purchases.addAll(_purchases);
+      purchases[event.status] = _purchases;
     }
   }
 }

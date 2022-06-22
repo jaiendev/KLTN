@@ -14,3 +14,9 @@ class GetProductCategoryHomeEvent extends ProductEvent {
 }
 
 class ClearProductCategoryEvent extends ProductEvent {}
+
+class AscendingEvent extends ProductEvent {
+  final bool isAscending;
+  final String idCategory;
+  AscendingEvent({required this.isAscending, required this.idCategory});
+}

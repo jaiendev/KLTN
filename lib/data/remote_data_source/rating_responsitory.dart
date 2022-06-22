@@ -36,8 +36,7 @@ class RatingRepository {
 
     Response response = await BaseRepository()
         .postRoute(Endpoints.ADD_RATING + '/' + '${productId}/reviews', body);
-
-    if (response.statusCode == StatusCode.CREATED) {
+    if ([StatusCode.OK, StatusCode.CREATED].contains(response.statusCode)) {
       return true;
     }
     return false;
@@ -50,13 +49,13 @@ class RatingRepository {
     var body = {
       'review': ratingModel.review,
       'rating': ratingModel.rating,
-      'photoReviews': [],
+      'photoReviews': ratingModel.photoReviews,
     };
 
     Response response = await BaseRepository()
         .patchRoute(Endpoints.UPDATE_RATING + '/' + '${ratingId}', body: body);
 
-    if (response.statusCode == StatusCode.OK) {
+    if ([StatusCode.OK, StatusCode.CREATED].contains(response.statusCode)) {
       return true;
     }
     return false;

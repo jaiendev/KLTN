@@ -106,6 +106,30 @@ class ProductModel {
     );
   }
 
+  factory ProductModel.fromMapHome(Map<String, dynamic> map) {
+    return ProductModel(
+      id: map['_id'] ?? '',
+      name: map['name'] ?? '',
+      slug: map['slug'] ?? '',
+      price: map['price']?.toDouble() ?? 0.0,
+      description: map['description'],
+      productPicture: map['productPicture'],
+      ratingsQuantity: map['ratingsQuantity']?.toInt(),
+      ratingAverage: map['ratingsAverage']?.toDouble(),
+      category: map['category'] ?? '',
+      createBy: map['createBy'] != null
+          ? DateTime.parse(map['createBy']).toLocal()
+          : null,
+      createdAt: map['createdAt'] != null
+          ? DateTime.parse(map['createdAt']).toLocal()
+          : null,
+      updateAt: map['updateAt'] != null
+          ? DateTime.parse(map['updateAt']).toLocal()
+          : null,
+      categoryName: '',
+    );
+  }
+
   String toJson() => json.encode(toMap());
 
   factory ProductModel.fromJson(String source) =>

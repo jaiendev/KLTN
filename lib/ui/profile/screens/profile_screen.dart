@@ -1,11 +1,13 @@
 import 'package:app_kltn_trunghoan/bloc/app_bloc.dart';
 import 'package:app_kltn_trunghoan/bloc/authenication/authenication_bloc.dart';
+import 'package:app_kltn_trunghoan/bloc/user/user_bloc.dart';
 import 'package:app_kltn_trunghoan/common/widgets/button_icon.dart';
 import 'package:app_kltn_trunghoan/common/widgets/custom_image/network_image/cached_image.dart';
 import 'package:app_kltn_trunghoan/common/widgets/dialogs/dialog_loading.dart';
+import 'package:app_kltn_trunghoan/common/widgets/shimmers/fade_simmer.dart';
 import 'package:app_kltn_trunghoan/common/widgets/touchable_opacity.dart';
 import 'package:app_kltn_trunghoan/constants/constants.dart';
-import 'package:app_kltn_trunghoan/data/local_data_source/user_local_data.dart';
+import 'package:app_kltn_trunghoan/models/account_model.dart';
 import 'package:app_kltn_trunghoan/routes/app_pages.dart';
 import 'package:app_kltn_trunghoan/routes/app_routes.dart';
 import 'package:app_kltn_trunghoan/ui/profile/widgets/button_select.dart';
@@ -59,7 +61,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             Expanded(
                               child: Center(
                                 child: Text(
-                                  'My Profile',
+                                  'Trang cá nhân',
                                   style: TextStyle(
                                     fontSize: 15.sp,
                                     fontWeight: FontWeight.w700,
@@ -79,51 +81,100 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                       ),
                       SizedBox(height: 15.sp),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 16.sp),
-                        child: Row(
-                          children: [
-                            CustomNetworkImage(
-                              urlToImage: UserLocal().getUser().photo,
-                              height: 80.sp,
-                              width: 80.sp,
-                            ),
-                            SizedBox(width: 15.sp),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  UserLocal().getUser().name,
-                                  style: TextStyle(
-                                    fontSize: 15.sp,
-                                    fontWeight: FontWeight.w700,
-                                    color: colorPrimary,
-                                  ),
+                      BlocBuilder<UserBloc, UserState>(
+                        builder: (context, state) {
+                          if (state is GetDoneUser) {
+                            AccountModel? accountModel =
+                                state.props[0] as AccountModel?;
+                            if (accountModel != null) {
+                              return Padding(
+                                padding:
+                                    EdgeInsets.symmetric(horizontal: 16.sp),
+                                child: Row(
+                                  children: [
+                                    CustomNetworkImage(
+                                      urlToImage: accountModel.photo,
+                                      height: 80.sp,
+                                      width: 80.sp,
+                                    ),
+                                    SizedBox(width: 15.sp),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          accountModel.name,
+                                          style: TextStyle(
+                                            fontSize: 15.sp,
+                                            fontWeight: FontWeight.w700,
+                                            color: colorPrimary,
+                                          ),
+                                        ),
+                                        SizedBox(height: 5.sp),
+                                        Text(
+                                          accountModel.phone,
+                                          style: TextStyle(
+                                            fontSize: 11.sp,
+                                            fontWeight: FontWeight.w700,
+                                            color: colorGray1,
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                    Spacer(),
+                                    TouchableOpacity(
+                                      onTap: () {
+                                        AppNavigator.push(Routes.EDIT_PROFILE);
+                                      },
+                                      child: Icon(
+                                        PhosphorIcons.pencil_simple_line_light,
+                                        color: colorGray1,
+                                        size: 25.sp,
+                                      ),
+                                    )
+                                  ],
                                 ),
-                                SizedBox(height: 5.sp),
-                                Text(
-                                  UserLocal().getUser().phone,
-                                  style: TextStyle(
-                                    fontSize: 11.sp,
-                                    fontWeight: FontWeight.w700,
+                              );
+                            }
+                          }
+
+                          return Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 16.sp),
+                            child: Row(
+                              children: [
+                                FadeShimmer.round(size: 80.sp),
+                                SizedBox(width: 15.sp),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    FadeShimmer(
+                                      height: 16.sp,
+                                      width: 60.sp,
+                                      fadeTheme: FadeTheme.lightReverse,
+                                    ),
+                                    SizedBox(height: 5.sp),
+                                    FadeShimmer(
+                                      height: 12.sp,
+                                      width: 40.sp,
+                                      fadeTheme: FadeTheme.lightReverse,
+                                    ),
+                                  ],
+                                ),
+                                Spacer(),
+                                TouchableOpacity(
+                                  onTap: () {
+                                    AppNavigator.push(Routes.EDIT_PROFILE);
+                                  },
+                                  child: Icon(
+                                    PhosphorIcons.pencil_simple_line_light,
                                     color: colorGray1,
+                                    size: 25.sp,
                                   ),
                                 )
                               ],
                             ),
-                            Spacer(),
-                            TouchableOpacity(
-                              onTap: () {
-                                AppNavigator.push(Routes.EDIT_PROFILE);
-                              },
-                              child: Icon(
-                                PhosphorIcons.pencil_simple_line_light,
-                                color: colorGray1,
-                                size: 25.sp,
-                              ),
-                            )
-                          ],
-                        ),
+                          );
+                        },
                       ),
                       SizedBox(height: 15.sp),
                       Container(
@@ -147,7 +198,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       SizedBox(height: 15.sp),
                       dividerThinkness6NotMargin,
                       ButtonSelect(
-                        content: 'Personal infomation',
+                        content: 'Thông tin người dùng',
                         icon: PhosphorIcons.user_light,
                         handlePressed: () {
                           AppNavigator.push(Routes.EDIT_PROFILE);
@@ -155,7 +206,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                       dividerChat,
                       ButtonSelect(
-                        content: 'Change password',
+                        content: 'Đổi mật khẩu',
                         icon: PhosphorIcons.lock_key_light,
                         handlePressed: () {
                           AppNavigator.push(Routes.CHANGE_PASSWORD);
@@ -163,7 +214,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                       dividerChat,
                       ButtonSelect(
-                        content: 'Favorite product',
+                        content: 'Sản phẩm yêu thích',
                         icon: PhosphorIcons.heart_straight_light,
                         handlePressed: () {
                           AppNavigator.push(Routes.FAVORITE_PRODUCT);
@@ -171,7 +222,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                       dividerChat,
                       ButtonSelect(
-                        content: 'Language',
+                        content: 'Ngôn ngữ',
                         icon: PhosphorIcons.globe_light,
                         handlePressed: () {},
                       ),

@@ -1,5 +1,8 @@
+import 'package:app_kltn_trunghoan/bloc/app_bloc.dart';
+import 'package:app_kltn_trunghoan/bloc/user/user_bloc.dart';
 import 'package:app_kltn_trunghoan/common/widgets/appbars/appbar_title_back.dart';
 import 'package:app_kltn_trunghoan/common/widgets/button_primary.dart';
+import 'package:app_kltn_trunghoan/common/widgets/dialogs/dialog_loading.dart';
 import 'package:app_kltn_trunghoan/common/widgets/text_field_form.dart';
 import 'package:app_kltn_trunghoan/ui/edit_profile/widgets/title_text_field.dart';
 import 'package:flutter/material.dart';
@@ -13,9 +16,27 @@ class ChangePasswordScreen extends StatefulWidget {
 }
 
 class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
-  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  // String _oldPassword = '';
-  // String _newPassword = '';
+  final _formKey = GlobalKey<FormState>();
+
+  final _controllerCurrentPassword = TextEditingController();
+  final _controllerNewPassword = TextEditingController();
+  final _controllerConfirmPassword = TextEditingController();
+  var _passErr = 'Mật khẩu phải có từ 8 kí tự';
+
+  Future<void> _trySubmitForm() async {
+    final isValid = _formKey.currentState!.validate();
+    if (isValid) {
+      showDialogLoading();
+      AppBloc.userBloc.add(
+        ChangePasswordEvent(
+          currentPassword: _controllerCurrentPassword.text,
+          newPassword: _controllerNewPassword.text,
+          confirmPassword: _controllerNewPassword.text,
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,26 +63,43 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   SizedBox(height: 16.sp),
                   TitleTextField(title: 'Current Password'),
                   TextFieldForm(
+                    controller: _controllerCurrentPassword,
                     isObscure: true,
                     initialValue: '',
-                    validatorForm: null,
+                    validatorForm: (val) {
+                      val!.trim().length < 8 ? _passErr : null;
+                    },
                   ),
                   TitleTextField(title: 'New Password'),
                   TextFieldForm(
+                    controller: _controllerNewPassword,
                     isObscure: true,
                     initialValue: '',
-                    validatorForm: null,
+                    validatorForm: (val) {
+                      val!.trim().length < 8 ? _passErr : null;
+                    },
                   ),
                   TitleTextField(title: 'Confirm Password'),
                   TextFieldForm(
+                    controller: _controllerConfirmPassword,
                     isObscure: true,
                     initialValue: '',
-                    validatorForm: null,
+                    validatorForm: (val) {
+                      if (val!.trim().length < 8)
+                        return _passErr;
+                      else {
+                        if (!val.contains(_controllerNewPassword.text)) {
+                          return 'Mật khẩu không giống nhau!!';
+                        }
+                      }
+                    },
                   ),
                 ],
               ),
               ButtonPrimary(
-                onPressed: () async {},
+                onPressed: () async {
+                  _trySubmitForm();
+                },
                 text: 'Save',
               ),
             ],

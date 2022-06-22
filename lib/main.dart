@@ -1,26 +1,34 @@
 import 'package:app_kltn_trunghoan/bloc/app_bloc.dart';
 import 'package:app_kltn_trunghoan/bloc/app_state/app_state_event.dart';
 import 'package:app_kltn_trunghoan/bloc/authenication/authenication_bloc.dart';
+import 'package:app_kltn_trunghoan/configs/contants/storage_key.dart';
 
 import 'package:app_kltn_trunghoan/constants/constants.dart';
 import 'package:app_kltn_trunghoan/helpers/device_orientation_helper.dart';
 import 'package:app_kltn_trunghoan/helpers/logger.dart';
+import 'package:app_kltn_trunghoan/helpers/path_helper.dart';
 import 'package:app_kltn_trunghoan/helpers/sizer_custom/sizer.dart';
 import 'package:app_kltn_trunghoan/home.dart';
 import 'package:app_kltn_trunghoan/routes/app_pages.dart';
 import 'package:app_kltn_trunghoan/routes/app_routes.dart';
 import 'package:app_kltn_trunghoan/routes/scaffold_wrapper.dart';
 import 'package:app_kltn_trunghoan/ui/home/screens/splash_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive/hive.dart';
 
 import 'bloc/application/bloc.dart';
 
 import 'routes/app_navigator_observer.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   Bloc.observer = AppBlocObserver();
+  var path = await PathHelper.appDir;
+  Hive..init(path.path);
+  await Hive.openBox(StorageKey.BOX_USER);
   runApp(const MyApp());
 }
 

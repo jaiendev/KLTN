@@ -18,28 +18,34 @@ class _ContainerOrderState extends State<ContainerOrder> {
       children: [
         Expanded(
           child: _buildSelection(
-            title: 'To Pay',
+            title: 'Chờ xác nhận',
             iconData: PhosphorIcons.cardholder_light,
             onTap: () {
-              AppNavigator.push(Routes.MY_PURCHASES);
+              AppNavigator.push(Routes.MY_PURCHASES, arguments: {
+                'indexCurrent': TO_PAY,
+              });
             },
           ),
         ),
         Expanded(
           child: _buildSelection(
             onTap: () {
-              AppNavigator.push(Routes.MY_PURCHASES);
+              AppNavigator.push(Routes.MY_PURCHASES, arguments: {
+                'indexCurrent': TO_SHIP,
+              });
             },
-            title: 'To Ship',
+            title: 'Đang giao',
             iconData: PhosphorIcons.truck_light,
           ),
         ),
         Expanded(
           child: _buildSelection(
             onTap: () {
-              AppNavigator.push(Routes.MY_PURCHASES);
+              AppNavigator.push(Routes.MY_PURCHASES, arguments: {
+                'indexCurrent': COMPLETE,
+              });
             },
-            title: 'Complete',
+            title: 'Đã giao',
             iconData: PhosphorIcons.codesandbox_logo_light,
           ),
         ),

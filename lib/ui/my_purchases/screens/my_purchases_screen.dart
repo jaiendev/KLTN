@@ -10,8 +10,8 @@ import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:app_kltn_trunghoan/helpers/sizer_custom/sizer.dart';
 
 class MyPurchasesScreen extends StatefulWidget {
-  MyPurchasesScreen({Key? key}) : super(key: key);
-
+  final int indexCurrent;
+  MyPurchasesScreen({required this.indexCurrent});
   @override
   State<MyPurchasesScreen> createState() => _MyPurchasesScreenState();
 }
@@ -29,11 +29,10 @@ class _MyPurchasesScreenState extends State<MyPurchasesScreen>
   @override
   void initState() {
     super.initState();
-    _currentIndex = 0;
-    // AppBloc.serviceManagamentBloc
-    //     .add(OnServiceEvent(status: _tabNumber[_currentIndex]));
+    _currentIndex = widget.indexCurrent;
+
     _tabController = TabController(
-      initialIndex: 1,
+      initialIndex: _currentIndex,
       length: _tabNumber.length,
       vsync: this,
     );
@@ -43,6 +42,8 @@ class _MyPurchasesScreenState extends State<MyPurchasesScreen>
         _tabController.animation?.value.round() ?? _tabController.index,
       );
     });
+    AppBloc.purchaseBloc
+        .add(GetPurchasesStatusEvent(status: _tabNumber[_currentIndex]));
   }
 
   _changeTab(int index) {
@@ -133,12 +134,12 @@ class _MyPurchasesScreenState extends State<MyPurchasesScreen>
                       return BlocBuilder<PurchasesBloc, PurchasesState>(
                         builder: (context, state) {
                           if (state is GetDonePurchase) {
-                            List<PurchaseModel>? purchases =
-                                state.props[0] as List<PurchaseModel>?;
-                            if (purchases != null) {
+                            Map<int, List<PurchaseModel>>? purchases = state
+                                .props[0] as Map<int, List<PurchaseModel>>?;
+                            if (purchases![_currentIndex] != null) {
                               return PurchasesScreen(
                                 tabNumber: tabNumber,
-                                orderModel: purchases,
+                                orderModel: purchases[_currentIndex]!,
                               );
                             }
                           }

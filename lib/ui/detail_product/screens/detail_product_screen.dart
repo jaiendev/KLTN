@@ -356,7 +356,18 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
                             Map<String, List<ProductModel>>? products = state
                                 .props[0] as Map<String, List<ProductModel>>?;
                             if (products?[widget.productModel.category] !=
-                                null) {
+                                    null &&
+                                products![widget.productModel.category]!
+                                    .isNotEmpty) {
+                              products[widget.productModel.category!] =
+                                  products[widget.productModel.category]!
+                                      .where(
+                                        (element) =>
+                                            element.id !=
+                                            widget.productModel.id,
+                                      )
+                                      .toList();
+
                               return Container(
                                 height: 35.h,
                                 child: ListView.builder(
@@ -364,7 +375,7 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
                                   padding: EdgeInsets.only(left: 16.sp),
                                   physics: BouncingScrollPhysics(),
                                   itemCount:
-                                      products?[widget.productModel.category]
+                                      products[widget.productModel.category]
                                               ?.length ??
                                           0,
                                   shrinkWrap: true,
@@ -373,7 +384,7 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
                                       margin: EdgeInsets.only(right: 10.sp),
                                       width: 50.w,
                                       child: ProductCard(
-                                        productModel: products![widget
+                                        productModel: products[widget
                                             .productModel.category]![index],
                                       ),
                                     );

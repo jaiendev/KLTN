@@ -66,7 +66,7 @@ class AuthenicationBloc extends Bloc<AuthenicationEvent, AuthenicationState> {
                 borderRadius: 10.sp,
                 slideFrom: SlideMode.bot,
                 child: DialogWithTextAndPopButton(
-                  title: 'Login Failed',
+                  title: 'Đăng nhập thất bại',
                   bodyBefore: description,
                   bodyAlign: TextAlign.center,
                 ),
@@ -136,6 +136,33 @@ class AuthenicationBloc extends Bloc<AuthenicationEvent, AuthenicationState> {
       }
     }
 
+    if (event is ForgotPasswordEvent) {
+      bool isSuccess = await _handleForgotPassword(event);
+      AppNavigator.pop();
+      if (isSuccess) {
+        await dialogAnimationWrapper(
+          slideFrom: SlideMode.bot,
+          child: DialogWithTextAndPopButton(
+            bodyAlign: TextAlign.center,
+            bodyBefore:
+                'Vui lòng kiểm tra hộp thư và làm theo hướng dẫn để thiết lập lại mật khẩu.',
+            bodyFontSize: 13.sp,
+            bodyColor: colorBlack1,
+            padding: EdgeInsets.only(
+              left: 24.sp,
+              right: 24.sp,
+              top: 22.sp,
+              bottom: 18.sp,
+            ),
+          ),
+          borderRadius: 10.sp,
+        );
+        AppNavigator.popUntil(Routes.LOGIN);
+      } else {
+        // Show dialog change password fail
+      }
+    }
+
     if (event is LogOutEvent) {
       await _handleLogOut();
       yield AuthenticationFail();
@@ -153,6 +180,13 @@ class AuthenicationBloc extends Bloc<AuthenicationEvent, AuthenicationState> {
 
   bool _onAuthCheck() {
     return UserLocal().getAccessToken() != '';
+  }
+
+  Future<bool> _handleForgotPassword(ForgotPasswordEvent event) async {
+    bool isSucceed = await AuthRepository().forgotPassword(
+      email: event.email,
+    );
+    return isSucceed;
   }
 
   Future<bool> _handleRegister(RegisterEvent event) async {

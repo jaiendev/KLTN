@@ -21,4 +21,19 @@ class ProductResponsitory {
     }
     return null;
   }
+
+  Future<List<ProductModel>?> getProductHome() async {
+    Response response = await BaseRepository().getRoute(
+      Endpoints.PRODUCT_HOME,
+    );
+
+    if (response.statusCode == StatusCode.OK) {
+      List listProduct = response.data['products'] ?? [];
+
+      return listProduct
+          .map((product) => ProductModel.fromMapHome(product))
+          .toList();
+    }
+    return null;
+  }
 }

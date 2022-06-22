@@ -2,6 +2,8 @@ import 'package:app_kltn_trunghoan/bloc/app_bloc.dart';
 import 'package:app_kltn_trunghoan/bloc/rating/rating_bloc.dart';
 import 'package:app_kltn_trunghoan/common/widgets/appbars/appbar_title_back.dart';
 import 'package:app_kltn_trunghoan/common/widgets/button_primary.dart';
+import 'package:app_kltn_trunghoan/common/widgets/custom_image/custom_image_picker.dart';
+import 'package:app_kltn_trunghoan/common/widgets/custom_image/network_image/cached_image.dart';
 import 'package:app_kltn_trunghoan/common/widgets/dialogs/dialog_loading.dart';
 import 'package:app_kltn_trunghoan/common/widgets/like_button/src/like_button.dart';
 import 'package:app_kltn_trunghoan/common/widgets/like_button/src/utils/like_button_model.dart';
@@ -12,6 +14,9 @@ import 'package:app_kltn_trunghoan/constants/constants.dart';
 import 'package:app_kltn_trunghoan/data/local_data_source/user_local_data.dart';
 import 'package:app_kltn_trunghoan/models/rating_model.dart';
 import 'package:app_kltn_trunghoan/routes/app_pages.dart';
+import 'package:app_kltn_trunghoan/service/firebase_storage/upload_image.dart';
+import 'package:app_kltn_trunghoan/ui/detail_product/widgets/select_image.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:app_kltn_trunghoan/helpers/sizer_custom/sizer.dart';
 
@@ -27,6 +32,8 @@ class CreateRatingScreen extends StatefulWidget {
 
 class _AnswerServiceFeedbackScreenState extends State<CreateRatingScreen> {
   final DateTime now = DateTime.now();
+  File? _image1;
+  File? _image2;
   final List<GlobalKey<LikeButtonState>> _globalKeys = [
     GlobalKey<LikeButtonState>(),
     GlobalKey<LikeButtonState>(),
@@ -63,7 +70,7 @@ class _AnswerServiceFeedbackScreenState extends State<CreateRatingScreen> {
     }
   }
 
-  void _postFeedback(BuildContext context) {
+  void _postFeedback(BuildContext context) async {
     final RatingModel newFeedback = RatingModel(
       id: feedback.id,
       rating: feedback.rating,
@@ -76,6 +83,38 @@ class _AnswerServiceFeedbackScreenState extends State<CreateRatingScreen> {
     );
 
     showDialogLoading();
+    newFeedback.photoReviews.clear();
+    if (_image1 != null) {
+      if (_image1 != null && _image1!.path.isNotEmpty) {
+        String? urlToFile =
+            await StorageService().uploadFileToStorage(_image1!.path);
+        if (urlToFile.isNotEmpty) {
+          newFeedback.photoReviews.add(urlToFile);
+        }
+      }
+    } else {
+      if (widget.ratingModel != null &&
+          widget.ratingModel!.photoReviews.isNotEmpty &&
+          widget.ratingModel!.photoReviews.first.isNotEmpty) {
+        newFeedback.photoReviews.add(widget.ratingModel!.photoReviews.first);
+      }
+    }
+
+    if (_image2 != null) {
+      if (_image2 != null && _image2!.path.isNotEmpty) {
+        String? urlToFile =
+            await StorageService().uploadFileToStorage(_image2!.path);
+        if (urlToFile.isNotEmpty) {
+          newFeedback.photoReviews.add(urlToFile);
+        }
+      }
+    } else {
+      if (widget.ratingModel != null &&
+          widget.ratingModel!.photoReviews.isNotEmpty &&
+          widget.ratingModel!.photoReviews[1].isNotEmpty) {
+        newFeedback.photoReviews.add(widget.ratingModel!.photoReviews[1]);
+      }
+    }
 
     if (widget.ratingModel != null) {
       AppBloc.ratingBloc.add(
@@ -225,6 +264,82 @@ class _AnswerServiceFeedbackScreenState extends State<CreateRatingScreen> {
                         maxLine: 7,
                         hintText: 'Lời nhận xét',
                       ),
+                      SizedBox(
+                        height: 18.sp,
+                      ),
+                      Row(
+                        children: [
+                          TouchableOpacity(
+                            onTap: () {
+                              CustomImagePicker().openImagePicker(
+                                context: context,
+                                handleFinish: (File val) async {
+                                  setState(() {
+                                    _image1 = val;
+                                  });
+                                },
+                              );
+                            },
+                            child: _image1 == null
+                                ? (widget.ratingModel != null &&
+                                        widget.ratingModel!.photoReviews
+                                            .isNotEmpty &&
+                                        widget.ratingModel!.photoReviews.first
+                                            .isNotEmpty)
+                                    ? CustomNetworkImage(
+                                        urlToImage: widget
+                                            .ratingModel!.photoReviews.first,
+                                        height: 80.sp,
+                                        width: 120.sp,
+                                        shape: BoxShape.rectangle,
+                                      )
+                                    : SelectImage(
+                                        titleImage: 'Ảnh 1',
+                                        imagePicked: _image1,
+                                      )
+                                : SelectImage(
+                                    titleImage: 'Ảnh 1',
+                                    imagePicked: _image1,
+                                  ),
+                          ),
+                          SizedBox(
+                            width: 17.sp,
+                          ),
+                          TouchableOpacity(
+                            onTap: () {
+                              CustomImagePicker().openImagePicker(
+                                context: context,
+                                handleFinish: (File val) async {
+                                  setState(() {
+                                    _image2 = val;
+                                  });
+                                },
+                              );
+                            },
+                            child: _image2 == null
+                                ? (widget.ratingModel != null &&
+                                        widget.ratingModel!.photoReviews
+                                            .isNotEmpty &&
+                                        widget.ratingModel!.photoReviews[1]
+                                            .isNotEmpty)
+                                    ? CustomNetworkImage(
+                                        urlToImage:
+                                            widget.ratingModel!.photoReviews[1],
+                                        height: 80.sp,
+                                        width: 120.sp,
+                                        shape: BoxShape.rectangle,
+                                      )
+                                    : SelectImage(
+                                        titleImage: 'Ảnh 2',
+                                        imagePicked: _image2,
+                                      )
+                                : SelectImage(
+                                    titleImage: 'Ảnh 2',
+                                    imagePicked: _image2,
+                                  ),
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                 ),
@@ -234,7 +349,7 @@ class _AnswerServiceFeedbackScreenState extends State<CreateRatingScreen> {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.sp),
             child: ButtonPrimary(
-              onPressed: () {
+              onPressed: () async {
                 _postFeedback(context);
               },
               text: 'Gửi',
