@@ -21,6 +21,7 @@ class ProductHomeBloc extends Bloc<ProductHomeEvent, ProductHomeState> {
     }
     if (event is ClearProductHomeEvent) {
       listProduct.clear();
+      yield _getDoneProductHome;
     }
   }
 
@@ -33,7 +34,8 @@ class ProductHomeBloc extends Bloc<ProductHomeEvent, ProductHomeState> {
         await ProductResponsitory().getProductHome();
 
     if (_products != null && _products.isNotEmpty) {
-      listProduct.addAll(_products);
+      listProduct
+          .addAll(_products.where((product) => product.isWorking == true));
     }
   }
 }

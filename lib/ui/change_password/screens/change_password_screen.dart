@@ -43,7 +43,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
       resizeToAvoidBottomInset: false,
       appBar: appBarTitleBack(
         context,
-        'Change Password',
+        'Đổi mật khẩu',
       ),
       body: Container(
         height: 100.h,
@@ -61,7 +61,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
               Column(
                 children: [
                   SizedBox(height: 16.sp),
-                  TitleTextField(title: 'Current Password'),
+                  TitleTextField(title: 'Mật khẩu hiện tại'),
                   TextFieldForm(
                     controller: _controllerCurrentPassword,
                     isObscure: true,
@@ -70,7 +70,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                       val!.trim().length < 8 ? _passErr : null;
                     },
                   ),
-                  TitleTextField(title: 'New Password'),
+                  TitleTextField(title: 'Mật khẩu mới'),
                   TextFieldForm(
                     controller: _controllerNewPassword,
                     isObscure: true,
@@ -79,7 +79,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                       val!.trim().length < 8 ? _passErr : null;
                     },
                   ),
-                  TitleTextField(title: 'Confirm Password'),
+                  TitleTextField(title: 'Nhập lại mật khẩu'),
                   TextFieldForm(
                     controller: _controllerConfirmPassword,
                     isObscure: true,

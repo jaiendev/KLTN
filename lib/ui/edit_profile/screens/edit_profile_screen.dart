@@ -77,7 +77,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       resizeToAvoidBottomInset: false,
       appBar: appBarTitleBack(
         context,
-        'Edit Profile',
+        'Chỉnh sửa thông tin',
         brightness: Brightness.light,
         backgroundColor: colorPrimary,
         elevation: 0.0,
@@ -94,7 +94,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 // top: 12.sp,
               ),
               child: Text(
-                'Update',
+                'Cập nhật',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 12.sp,
@@ -140,56 +140,64 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                     handleFinish: _handlePickImage,
                                   );
                                 },
-                                child: Stack(
-                                  children: [
-                                    _imagePicked == null
-                                        ? CustomNetworkImage(
-                                            width: 84.sp,
-                                            height: 84.sp,
-                                            margin: EdgeInsets.symmetric(
-                                              vertical: 16.sp,
-                                            ),
-                                            urlToImage: urlImage,
-                                          )
-                                        : Container(
-                                            width: 84.sp,
-                                            height: 84.sp,
-                                            margin: EdgeInsets.symmetric(
-                                              vertical: 16.sp,
-                                            ),
-                                            decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              image: DecorationImage(
-                                                image: getImage(),
-                                                fit: BoxFit.cover,
+                                child: Container(
+                                  padding: EdgeInsets.all(2.sp),
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.white,
+                                    border: Border.all(color: colorPrimary),
+                                  ),
+                                  child: Stack(
+                                    children: [
+                                      _imagePicked == null
+                                          ? CustomNetworkImage(
+                                              width: 84.sp,
+                                              height: 84.sp,
+                                              margin: EdgeInsets.symmetric(
+                                                vertical: 16.sp,
+                                              ),
+                                              urlToImage: urlImage,
+                                            )
+                                          : Container(
+                                              width: 84.sp,
+                                              height: 84.sp,
+                                              margin: EdgeInsets.symmetric(
+                                                vertical: 16.sp,
+                                              ),
+                                              decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                image: DecorationImage(
+                                                  image: getImage(),
+                                                  fit: BoxFit.cover,
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                    Positioned(
-                                      bottom: 24.sp,
-                                      right: 4.sp,
-                                      child: TouchableOpacity(
-                                        onTap: () {
-                                          CustomImagePicker().openImagePicker(
-                                            context: context,
-                                            handleFinish: _handlePickImage,
-                                          );
-                                        },
-                                        child: Container(
-                                          padding: EdgeInsets.all(3.sp),
-                                          decoration: BoxDecoration(
-                                            color: colorPrimary,
-                                            shape: BoxShape.circle,
-                                          ),
-                                          child: Icon(
-                                            PhosphorIcons.pencil_simple_light,
-                                            size: 10.sp,
-                                            color: Colors.white,
+                                      Positioned(
+                                        bottom: 24.sp,
+                                        right: 4.sp,
+                                        child: TouchableOpacity(
+                                          onTap: () {
+                                            CustomImagePicker().openImagePicker(
+                                              context: context,
+                                              handleFinish: _handlePickImage,
+                                            );
+                                          },
+                                          child: Container(
+                                            padding: EdgeInsets.all(3.sp),
+                                            decoration: BoxDecoration(
+                                              color: colorPrimary,
+                                              shape: BoxShape.circle,
+                                            ),
+                                            child: Icon(
+                                              PhosphorIcons.pencil_simple_light,
+                                              size: 10.sp,
+                                              color: Colors.white,
+                                            ),
                                           ),
                                         ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
@@ -200,7 +208,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           child: Column(
                             children: [
                               TitleTextField(
-                                title: 'Name',
+                                title: 'Tên',
                                 padding: EdgeInsets.zero,
                               ),
                               TextFieldForm(
@@ -208,7 +216,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                 validatorForm: null,
                                 onChanged: (val) {},
                               ),
-                              TitleTextField(title: 'Address'),
+                              TitleTextField(title: 'Địa chỉ'),
                               TextFieldForm(
                                 controller: _locationController,
                                 validatorForm: null,
@@ -227,7 +235,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               ),
                               SizedBox(height: 10.sp),
                               TitleTextField(
-                                title: 'Phone',
+                                title: 'Số điện thoại',
                                 padding: EdgeInsets.zero,
                               ),
                               TextFieldForm(

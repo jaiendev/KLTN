@@ -1,9 +1,11 @@
 import 'package:app_kltn_trunghoan/bloc/app_bloc.dart';
 import 'package:app_kltn_trunghoan/bloc/purchases/purchases_bloc.dart';
 import 'package:app_kltn_trunghoan/common/widgets/appbars/appbar_title_back.dart';
+import 'package:app_kltn_trunghoan/common/widgets/touchable_opacity.dart';
 import 'package:app_kltn_trunghoan/constants/constants.dart';
 import 'package:app_kltn_trunghoan/models/purchase_model.dart';
 import 'package:app_kltn_trunghoan/ui/my_purchases/screens/purchases_screen.dart';
+import 'package:app_kltn_trunghoan/ui/my_purchases/widgets/order_shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
@@ -66,10 +68,22 @@ class _MyPurchasesScreenState extends State<MyPurchasesScreen>
         context,
         'Đơn hàng của tôi',
         actions: [
-          Icon(
-            PhosphorIcons.magnifying_glass_light,
-            size: 20.sp,
-            color: colorPrimary,
+          TouchableOpacity(
+            onTap: () {
+              AppBloc.purchaseBloc.add(
+                RefreshPurchaseEvent(
+                  status: _currentIndex,
+                ),
+              );
+            },
+            child: Container(
+              color: Colors.transparent,
+              child: Icon(
+                PhosphorIcons.arrow_counter_clockwise,
+                size: 20.sp,
+                color: colorPrimary,
+              ),
+            ),
           ),
           SizedBox(width: 16.sp)
         ],
@@ -149,7 +163,7 @@ class _MyPurchasesScreenState extends State<MyPurchasesScreen>
                             itemCount: 4,
                             shrinkWrap: true,
                             itemBuilder: (context, index) {
-                              return Container();
+                              return OrderCardShimmer();
                             },
                           );
                         },

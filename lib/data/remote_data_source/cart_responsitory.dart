@@ -71,8 +71,28 @@ class CartResponsitory {
     );
 
     if (response.statusCode == StatusCode.OK) {
-      return response.data['url'];
+      return response.data['url'].toString();
     }
+
     return null;
+  }
+
+  Future<bool> deleteProductCart({
+    required String productId,
+  }) async {
+    var body = {
+      'productId': productId,
+    };
+
+    Response response = await BaseRepository().postRoute(
+      Endpoints.DELETE_PRODUCT_FORM_CART,
+      body,
+    );
+
+    if (response.statusCode == StatusCode.OK) {
+      return true;
+    }
+
+    return false;
   }
 }

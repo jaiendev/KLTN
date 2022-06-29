@@ -40,4 +40,9 @@ class PaymentVNPayEvent extends CartEvent {
   PaymentVNPayEvent({required this.orderDescriptionModel});
 }
 
+class DeleteProductCartEvent extends CartEvent {
+  final String productId;
+  DeleteProductCartEvent({required this.productId});
+}
+
 class CleanCartUserEvent extends CartEvent {}

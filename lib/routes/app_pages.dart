@@ -107,7 +107,7 @@ class AppNavigator extends RouteObserver<PageRoute<dynamic>> {
       case Routes.PAYMENT_VNPAY:
         return _buildRoute(
           settings,
-          WebViewPaymentScreen(
+          WebViewVNPayScreen(
             url: arguments?['url'],
             onPaymentDone: arguments?['onPaymentDone'],
           ),

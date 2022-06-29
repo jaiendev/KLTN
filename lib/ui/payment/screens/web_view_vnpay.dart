@@ -1,16 +1,12 @@
-import 'dart:io';
-
 import 'package:app_kltn_trunghoan/common/widgets/appbars/appbar_title_back.dart';
 import 'package:app_kltn_trunghoan/constants/constants.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
 import 'package:app_kltn_trunghoan/helpers/sizer_custom/sizer.dart';
-import 'package:webview_flutter/webview_flutter.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:native_webview/native_webview.dart';
 
-class WebViewPaymentScreen extends StatefulWidget {
-  const WebViewPaymentScreen({
+class WebViewVNPayScreen extends StatefulWidget {
+  const WebViewVNPayScreen({
     Key? key,
     required this.url,
     required this.onPaymentDone,
@@ -20,19 +16,19 @@ class WebViewPaymentScreen extends StatefulWidget {
   final Function(bool) onPaymentDone;
 
   @override
-  _WebViewPaymentScreenState createState() => _WebViewPaymentScreenState();
+  _WebViewVNPayScreenState createState() => _WebViewVNPayScreenState();
 }
 
-class _WebViewPaymentScreenState extends State<WebViewPaymentScreen> {
+class _WebViewVNPayScreenState extends State<WebViewVNPayScreen> {
   UniqueKey _key = UniqueKey();
-  final Set<Factory<OneSequenceGestureRecognizer>> _gestureRecognizers =
-      [Factory(() => EagerGestureRecognizer())].toSet();
+  // final Set<Factory<OneSequenceGestureRecognizer>> _gestureRecognizers =
+  //     [Factory(() => EagerGestureRecognizer())].toSet();
   bool isLoadFirstSuccess = true;
   bool isLoading = true;
   @override
   void initState() {
     super.initState();
-    if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
+    // if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
   }
 
   @override
@@ -44,7 +40,7 @@ class _WebViewPaymentScreenState extends State<WebViewPaymentScreen> {
       child: Scaffold(
         appBar: appBarTitleBack(
           context,
-          'Thanh Toán',
+          'Thanh toán',
         ),
         body: Column(
           children: [
@@ -54,21 +50,21 @@ class _WebViewPaymentScreenState extends State<WebViewPaymentScreen> {
                 children: [
                   WebView(
                     key: _key,
-                    gestureRecognizers: _gestureRecognizers,
                     initialUrl: widget.url,
                     gestureNavigationEnabled: true,
-                    javascriptMode: JavascriptMode.unrestricted,
-                    onPageFinished: (url) {
+                    onPageFinished: (controller, url) {
                       if (mounted && isLoading) {
                         setState(() {
                           isLoading = false;
                         });
                       }
 
-                      if (url.toLowerCase().startsWith(URL_VNPAY) &&
+                      if (url != null &&
+                          url.toLowerCase().startsWith(URL_VNPAY) &&
                           isLoadFirstSuccess) {
                         isLoadFirstSuccess = false;
-                        widget.onPaymentDone(true);
+                        widget.onPaymentDone(
+                            url.toLowerCase().contains(VNPAY_SUCCESS));
                       }
                     },
                   ),

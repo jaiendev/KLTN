@@ -16,6 +16,7 @@ class ProductModel {
   DateTime? createBy;
   DateTime? createdAt;
   DateTime? updateAt;
+  bool? isWorking;
   ProductModel({
     required this.id,
     required this.name,
@@ -30,6 +31,7 @@ class ProductModel {
     this.createdAt,
     this.updateAt,
     this.categoryName,
+    this.isWorking,
   });
 
   ProductModel copyWith({
@@ -46,6 +48,7 @@ class ProductModel {
     DateTime? createdAt,
     DateTime? updateAt,
     String? categoryName,
+    bool? isWorking,
   }) {
     return ProductModel(
       id: id ?? this.id,
@@ -61,6 +64,7 @@ class ProductModel {
       createdAt: createdAt ?? this.createdAt,
       updateAt: updateAt ?? this.updateAt,
       categoryName: categoryName ?? this.categoryName,
+      isWorking: isWorking ?? this.isWorking,
     );
   }
 
@@ -79,6 +83,7 @@ class ProductModel {
       'createdAt': createdAt?.millisecondsSinceEpoch,
       'updateAt': updateAt?.millisecondsSinceEpoch,
       'categoryName': categoryName,
+      'isWorking': isWorking,
     };
   }
 
@@ -103,6 +108,7 @@ class ProductModel {
           ? DateTime.parse(map['updateAt']).toLocal()
           : null,
       categoryName: map['category']?['name'] ?? '',
+      isWorking: map['isWorking'] ?? false,
     );
   }
 
@@ -127,6 +133,7 @@ class ProductModel {
           ? DateTime.parse(map['updateAt']).toLocal()
           : null,
       categoryName: '',
+      isWorking: map['isWorking'] ?? false,
     );
   }
 

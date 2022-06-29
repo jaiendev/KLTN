@@ -8,4 +8,14 @@ class GetPurchasesStatusEvent extends PurchasesEvent {
   GetPurchasesStatusEvent({required this.status});
 }
 
+class AddPurchaseEvent extends PurchasesEvent {
+  final PurchaseModel purchaseModel;
+  AddPurchaseEvent({required this.purchaseModel});
+}
+
+class RefreshPurchaseEvent extends PurchasesEvent {
+  final int status;
+  RefreshPurchaseEvent({required this.status});
+}
+
 class CleanPurchasesEvent extends PurchasesEvent {}

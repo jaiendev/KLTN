@@ -35,7 +35,7 @@ class _PurchasesScreenState extends State<PurchasesScreen> {
               width: 140.sp,
               height: 82.sp,
             ),
-            text: 'No Order Yet',
+            text: 'Chưa có đơn hàng nào',
           )
         : ListView.builder(
             padding: EdgeInsets.only(bottom: 10.h),

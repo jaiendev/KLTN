@@ -17,9 +17,18 @@ class PurchasesBloc extends Bloc<PurchasesEvent, PurchasesState> {
       if (purchases[event.status] == null) {
         yield PurchasesInitial();
 
-        await _getPurchases(event);
+        await _getPurchases(event.status);
       }
 
+      yield _getDonePurchases;
+    }
+    if (event is AddPurchaseEvent) {
+      purchases[0]!.insert(0, event.purchaseModel);
+      yield _getDonePurchases;
+    }
+    if (event is RefreshPurchaseEvent) {
+      purchases[event.status]!.clear();
+      await _getPurchases(event.status);
       yield _getDonePurchases;
     }
   }
@@ -29,13 +38,13 @@ class PurchasesBloc extends Bloc<PurchasesEvent, PurchasesState> {
   GetDonePurchase get _getDonePurchases =>
       GetDonePurchase(purchases: purchases);
 
-  Future<void> _getPurchases(GetPurchasesStatusEvent event) async {
+  Future<void> _getPurchases(int status) async {
     List<PurchaseModel>? _purchases = await PurchaseResponsitory().getPurchases(
-      status: event.status,
+      status: status,
     );
 
     if (_purchases != null) {
-      purchases[event.status] = _purchases;
+      purchases[status] = _purchases;
     }
   }
 }

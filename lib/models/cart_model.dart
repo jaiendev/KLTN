@@ -9,6 +9,7 @@ class CartModel {
   final String productPicture;
   int qty;
   int price;
+  bool? isWorking;
   CartModel({
     required this.id,
     required this.productId,
@@ -16,6 +17,7 @@ class CartModel {
     required this.productPicture,
     required this.qty,
     required this.price,
+    this.isWorking,
   });
 
   CartModel copyWith({
@@ -25,6 +27,7 @@ class CartModel {
     String? productPicture,
     int? qty,
     int? price,
+    bool? isWorking,
   }) {
     return CartModel(
       id: id ?? this.id,
@@ -33,6 +36,7 @@ class CartModel {
       productPicture: productPicture ?? this.productPicture,
       qty: qty ?? this.qty,
       price: price ?? this.price,
+      isWorking: isWorking ?? this.isWorking,
     );
   }
 
@@ -44,6 +48,7 @@ class CartModel {
       'productPicture': productPicture,
       'qty': qty,
       'price': price,
+      'isWorking': isWorking,
     };
   }
 
@@ -55,6 +60,7 @@ class CartModel {
       productPicture: map['productPicture'] ?? '',
       qty: map['qty']?.toInt() ?? 0,
       price: map['price']?.toInt() ?? 0,
+      isWorking: map['isWorking'] ?? true,
     );
   }
 

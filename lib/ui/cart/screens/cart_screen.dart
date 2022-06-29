@@ -1,17 +1,22 @@
 import 'package:app_kltn_trunghoan/bloc/app_bloc.dart';
 import 'package:app_kltn_trunghoan/bloc/cart/cart_bloc.dart';
 import 'package:app_kltn_trunghoan/bloc/user/user_bloc.dart';
+import 'package:app_kltn_trunghoan/bloc/voucher/voucher_bloc.dart';
 import 'package:app_kltn_trunghoan/common/widgets/button_icon.dart';
 import 'package:app_kltn_trunghoan/common/widgets/button_primary.dart';
+import 'package:app_kltn_trunghoan/common/widgets/dialogs/dialog_loading.dart';
 import 'package:app_kltn_trunghoan/common/widgets/text_field_form.dart';
 import 'package:app_kltn_trunghoan/common/widgets/touchable_opacity.dart';
 import 'package:app_kltn_trunghoan/constants/constants.dart';
+import 'package:app_kltn_trunghoan/data/local_data_source/user_local_data.dart';
 import 'package:app_kltn_trunghoan/models/account_model.dart';
 import 'package:app_kltn_trunghoan/models/cart_model.dart';
 import 'package:app_kltn_trunghoan/models/orderDescription_model.dart';
+import 'package:app_kltn_trunghoan/models/voucher_model.dart';
 import 'package:app_kltn_trunghoan/routes/app_pages.dart';
 import 'package:app_kltn_trunghoan/ui/cart/widgets/cart_card.dart';
 import 'package:app_kltn_trunghoan/ui/cart/widgets/text_total.dart';
+import 'package:app_kltn_trunghoan/ui/cart/widgets/voucher_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -31,6 +36,7 @@ class _CartScreenState extends State<CartScreen> {
   final _controllerPhone = TextEditingController();
   final _controllerAddress = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  final _scrollController = ScrollController();
   @override
   void initState() {
     super.initState();
@@ -38,9 +44,10 @@ class _CartScreenState extends State<CartScreen> {
     _controllerPhone.text = AppBloc.userBloc.getAccount.phone;
   }
 
-  Future<void> _trySubmitForm() async {
+  void _trySubmitForm() {
     final isValid = _formKey.currentState!.validate();
     if (isValid) {
+      showDialogLoading();
       AccountModel accountModel = AppBloc.userBloc.getAccount;
       accountModel.phone = _controllerPhone.text;
       accountModel.address = _controllerAddress.text;
@@ -170,7 +177,9 @@ class _CartScreenState extends State<CartScreen> {
                                 for (CartModel cartModel in carts) {
                                   if (dem < carts.length) {
                                     _total = _total +
-                                        (cartModel.price * cartModel.qty);
+                                        ((cartModel.isWorking ?? true)
+                                            ? (cartModel.price * cartModel.qty)
+                                            : 0);
                                     dem++;
                                   }
                                 }
@@ -188,27 +197,10 @@ class _CartScreenState extends State<CartScreen> {
                                         return CartCard(
                                           cartModel: carts[index],
                                           onTapPlus: () {
-                                            AppBloc.cartBloc.add(
-                                              AddProductCartEvent(
-                                                productId:
-                                                    carts[index].productId,
-                                                qty: 1,
-                                                price: carts[index].price,
-                                                productName:
-                                                    carts[index].productName,
-                                                productImage:
-                                                    carts[index].productPicture,
-                                              ),
-                                            );
-                                            setState(() {
-                                              _total =
-                                                  _total + carts[index].price;
-                                            });
-                                          },
-                                          onTapSub: () {
-                                            setState(() {
+                                            if (carts[index].isWorking ??
+                                                true) {
                                               AppBloc.cartBloc.add(
-                                                SubProductCartEvent(
+                                                AddProductCartEvent(
                                                   productId:
                                                       carts[index].productId,
                                                   qty: 1,
@@ -219,75 +211,172 @@ class _CartScreenState extends State<CartScreen> {
                                                       .productPicture,
                                                 ),
                                               );
+                                              setState(() {
+                                                _total =
+                                                    _total + carts[index].price;
+                                              });
+                                            }
+                                          },
+                                          onTapSub: () {
+                                            if (carts[index].isWorking ??
+                                                true) {
+                                              setState(() {
+                                                AppBloc.cartBloc.add(
+                                                  SubProductCartEvent(
+                                                    productId:
+                                                        carts[index].productId,
+                                                    qty: 1,
+                                                    price: carts[index].price,
+                                                    productName: carts[index]
+                                                        .productName,
+                                                    productImage: carts[index]
+                                                        .productPicture,
+                                                  ),
+                                                );
 
-                                              _total =
-                                                  _total - carts[index].price;
-                                            });
+                                                _total =
+                                                    _total - carts[index].price;
+                                              });
+                                            }
                                           },
                                         );
                                       },
                                     ),
-                                    Container(
-                                      margin: EdgeInsets.symmetric(
-                                          horizontal: 16.sp),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(
-                                          8.sp,
-                                        ),
-                                        color: colorPrimary,
-                                      ),
-                                      child: Row(
-                                        children: [
-                                          SizedBox(width: 4.sp),
-                                          Expanded(
-                                            child: TextFieldForm(
-                                              margin: EdgeInsets.zero,
-                                              contentPadding:
-                                                  EdgeInsets.symmetric(
-                                                vertical: 15.sp,
-                                                horizontal: 11.sp,
-                                              ),
-                                              colorText: Colors.white,
-                                              validatorForm: null,
-                                              hintText: 'Mã Khuyến mãi',
-                                              colorBorder: colorPrimary,
-                                              backgroundColor: colorPrimary,
-                                              colorHintText: Colors.white,
-                                              focusedBorder: OutlineInputBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(6.sp),
-                                                borderSide: BorderSide(
-                                                  color: colorPrimary,
-                                                  width: 0.01.sp,
-                                                ),
-                                              ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 16.sp),
+                                          child: Text(
+                                            'Voucher giảm giá của bạn:',
+                                            style: TextStyle(
+                                              color: colorPrimary,
+                                              fontSize: 16.sp,
+                                              fontWeight: FontWeight.w700,
                                             ),
                                           ),
-                                          Container(
-                                            decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius:
-                                                  BorderRadius.circular(6.sp),
-                                            ),
-                                            padding: EdgeInsets.symmetric(
-                                              vertical: 6.sp,
-                                              horizontal: 18.sp,
-                                            ),
-                                            margin:
-                                                EdgeInsets.only(right: 15.sp),
-                                            child: Center(
-                                              child: Text(
-                                                'Áp dụng',
-                                                style: TextStyle(
-                                                  color: colorPrimary,
-                                                  fontSize: 12.sp,
-                                                  fontWeight: FontWeight.w700,
-                                                ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 10.sp),
+                                    BlocBuilder<VoucherBloc, VoucherState>(
+                                      builder: (context, state) {
+                                        if (state is GetDoneVoucher) {
+                                          List<VoucherModel>? vouchers = state
+                                              .props[0] as List<VoucherModel>?;
+                                          if (vouchers != null) {
+                                            vouchers = vouchers
+                                                .where((voucher) =>
+                                                    voucher.userVoucher ==
+                                                        'all' ||
+                                                    voucher.userVoucher ==
+                                                        UserLocal()
+                                                            .getUser()
+                                                            .email)
+                                                .toList();
+
+                                            return Container(
+                                              height: 68.sp,
+                                              child: ListView.builder(
+                                                controller: _scrollController,
+                                                itemCount: vouchers.length,
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 16.sp),
+                                                scrollDirection:
+                                                    Axis.horizontal,
+                                                physics:
+                                                    BouncingScrollPhysics(),
+                                                itemBuilder:
+                                                    (BuildContext context,
+                                                        int index) {
+                                                  return Container(
+                                                    margin: EdgeInsets.only(
+                                                      right: 10.sp,
+                                                      bottom: 4.sp,
+                                                      top: 4.sp,
+                                                    ),
+                                                    child: VoucherCard(
+                                                      isActive: vouchers![index]
+                                                          .isCheck,
+                                                      onTap: (value) {
+                                                        if (value == true) {
+                                                          setState(
+                                                            () {
+                                                              vouchers![index]
+                                                                      .isCheck =
+                                                                  true;
+                                                              vouchers
+                                                                  .asMap()
+                                                                  .forEach(
+                                                                (i, bool) {
+                                                                  if (i !=
+                                                                      index) {
+                                                                    vouchers![i]
+                                                                            .isCheck =
+                                                                        false;
+                                                                  }
+                                                                },
+                                                              );
+
+                                                              _total = (_total *
+                                                                      (100 -
+                                                                          vouchers[index]
+                                                                              .discountPercent) /
+                                                                      100)
+                                                                  .round();
+                                                            },
+                                                          );
+                                                        } else {
+                                                          setState(
+                                                            () {
+                                                              vouchers![index]
+                                                                      .isCheck =
+                                                                  true;
+                                                              vouchers
+                                                                  .asMap()
+                                                                  .forEach(
+                                                                (i, bool) {
+                                                                  if (i !=
+                                                                      index) {
+                                                                    vouchers![i]
+                                                                            .isCheck =
+                                                                        true;
+                                                                  }
+                                                                },
+                                                              );
+
+                                                              _total = (_total /
+                                                                      ((100 - vouchers[index].discountPercent) /
+                                                                          100))
+                                                                  .round();
+                                                            },
+                                                          );
+                                                        }
+                                                      },
+                                                      code:
+                                                          vouchers[index].code,
+                                                      color: colorVoucher[
+                                                          index == 0
+                                                              ? index
+                                                              : index % 3],
+                                                      describe: vouchers[index]
+                                                          .describe,
+                                                      discountPercent:
+                                                          vouchers[index]
+                                                              .discountPercent
+                                                              .toString(),
+                                                    ),
+                                                  );
+                                                },
                                               ),
-                                            ),
-                                          )
-                                        ],
-                                      ),
+                                            );
+                                          }
+                                          return SizedBox();
+                                        }
+                                        return SizedBox();
+                                      },
                                     ),
                                     SizedBox(height: 5.sp),
                                     TextTotal(
@@ -321,8 +410,8 @@ class _CartScreenState extends State<CartScreen> {
                       child: Container(
                         padding: EdgeInsets.symmetric(horizontal: 16.sp),
                         child: ButtonPrimary(
-                          onPressed: () async {
-                            await _trySubmitForm();
+                          onPressed: () {
+                            _trySubmitForm();
                           },
                           text: 'Thanh toán giỏ hàng',
                           height: 45.sp,

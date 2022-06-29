@@ -57,7 +57,8 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
         .getProductCategoryChild(idCategory: event.idCategory);
 
     if (_products != null && _products.isNotEmpty) {
-      productHomes[event.idCategory] = _products;
+      productHomes[event.idCategory] =
+          _products.where((product) => product.isWorking == true).toList();
       if (!isAscending) {
         productHomes[event.idCategory]!
             .sort((a, b) => a.price.compareTo(b.price));

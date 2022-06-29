@@ -31,7 +31,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   String _passwordConfirm = '';
   bool _passwordVisible = false;
   var _emailErr = 'Bạn cần nhập email!!';
-  var _passErr = 'Mật khẩu phải có từ 6 kí tự';
+  var _passErr = 'Mật khẩu phải có từ 8 kí tự';
   var _usernameErr = 'Bạn cần nhập tên người dùng';
   var _passConfirmErr = 'Mật khẩu 2 không giống mật khẩu 1';
 
@@ -147,7 +147,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               hintText: 'Password',
                               textVisible: _passwordVisible,
                               validator: (value) =>
-                                  value!.trim().length < 6 ? _passErr : null,
+                                  value!.trim().length < 8 ? _passErr : null,
                               suffixIcon: TouchableOpacity(
                                 child: Padding(
                                   padding: EdgeInsets.only(right: 8.sp),
@@ -171,7 +171,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               keyboardType: TextInputType.text,
                               hintText: 'Confirm Password',
                               textVisible: _passwordVisible,
-                              validator: (value) => value!.trim().length < 6
+                              validator: (value) => value!.trim().length < 8
                                   ? _passErr
                                   : value.trim().toUpperCase() !=
                                           _password.toUpperCase()

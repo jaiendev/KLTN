@@ -20,13 +20,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       _handleChangeIndex(event);
       yield _homeDone;
     }
-    // if (event is RefreshHomeEvent) {
-    //   AppBloc.categoryHomeBloc.add(RefreshCategoryHomeEvent());
-    //   AppBloc.categoryBloc.add(RefreshCategoriesEvent());
-    //   AppBloc.discoverBloc.add(RefreshDiscoverEvent());
-    //   AppBloc.hotExpertHomeBloc.add(RefreshHotExpertEvent());
-    //   event.handleFinished();
-    // }
+    if (event is RefreshHomeEvent) {
+      AppBloc.cleanBloc();
+      AppBloc.initialHomeBloc();
+      event.handleFinished();
+    }
   }
 
   // MARK: Private methods

@@ -10,6 +10,7 @@ import 'package:app_kltn_trunghoan/bloc/purchases/purchases_bloc.dart';
 import 'package:app_kltn_trunghoan/bloc/rating/rating_bloc.dart';
 import 'package:app_kltn_trunghoan/bloc/timer/timer_bloc.dart';
 import 'package:app_kltn_trunghoan/bloc/user/user_bloc.dart';
+import 'package:app_kltn_trunghoan/bloc/voucher/voucher_bloc.dart';
 import 'package:app_kltn_trunghoan/data/local_data_source/user_local_data.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -26,6 +27,7 @@ class AppBloc {
   static final categoryBloc = CategoryBloc();
   static final purchaseBloc = PurchasesBloc();
   static final productHomeBloc = ProductHomeBloc();
+  static final voucherBloc = VoucherBloc();
 
   static final List<BlocProvider> providers = [
     BlocProvider<HomeBloc>(
@@ -64,6 +66,9 @@ class AppBloc {
     BlocProvider<ProductHomeBloc>(
       create: (context) => productHomeBloc,
     ),
+    BlocProvider<VoucherBloc>(
+      create: (context) => voucherBloc,
+    ),
   ];
 
   static void dispose() {
@@ -78,6 +83,7 @@ class AppBloc {
     userBloc.close();
     categoryBloc.close();
     purchaseBloc.close();
+    voucherBloc.close();
   }
 
   static void initialHomeBloc() {
@@ -98,14 +104,7 @@ class AppBloc {
     cartBloc.add(GetCartUserEvent());
     purchaseBloc.add(GetPurchasesStatusEvent(status: 0));
     userBloc.add(GetInfoUserEvent(idUser: UserLocal().getUser().id));
-    // userBloc.add(GetUserInfo());
-    // badgesBloc.add(GetBadgesChatEvent());
-    // chatBloc.add(OnChatEvent());
-    // notificationBloc.add(GetNotificationEvent());
-    // serviceManagamentBloc.add(GetCancelServiceReasonsEvent());
-    // hotSearchBloc.add(GetHotSearchEvent());
-    // paymentCard.add(OnPaymentCardEvent());
-    // calendarBloc..add(GetCalendarEvent());
+    voucherBloc.add(GetVoucherEvent());
   }
 
   static void cleanBloc() {
@@ -116,6 +115,8 @@ class AppBloc {
     categoryBloc.add(CleanCategoryEvnet());
     purchaseBloc.add(CleanPurchasesEvent());
     userBloc.add(CleanUserEvent());
+    voucherBloc.add(CleanVoucherEvnet());
+    productHomeBloc.add(ClearProductHomeEvent());
   }
 
   ///Singleton factory

@@ -14,6 +14,7 @@ class Endpoints {
   //cart
   static final String CART_USER = 'api/v1/cart';
   static final String SUB_PRODUCT_CART = 'api/v1/cart/decreaseFromCart';
+  static final String DELETE_PRODUCT_FORM_CART = 'api/v1/cart/deleteFromCart';
 
   //user
   static final String UPDATE_USER = 'api/v1/users/updateMe';
@@ -27,4 +28,7 @@ class Endpoints {
 
   //purchases
   static final String PURCHASES = 'api/v1/orders/customer';
+
+  //voucher
+  static final String VOUCHER = 'api/v1/vouchers';
 }

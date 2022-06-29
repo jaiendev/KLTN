@@ -1,4 +1,7 @@
+import 'package:app_kltn_trunghoan/bloc/app_bloc.dart';
+import 'package:app_kltn_trunghoan/bloc/cart/cart_bloc.dart';
 import 'package:app_kltn_trunghoan/common/widgets/custom_image/network_image/cached_image.dart';
+import 'package:app_kltn_trunghoan/common/widgets/touchable_opacity.dart';
 import 'package:app_kltn_trunghoan/constants/constants.dart';
 import 'package:app_kltn_trunghoan/models/cart_model.dart';
 import 'package:app_kltn_trunghoan/ui/cart/widgets/button_plus.dart';
@@ -32,26 +35,49 @@ class _CartCardState extends State<CartCard> {
               children: [
                 Row(
                   children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10.sp),
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            spreadRadius: 1,
-                            blurRadius: 4,
-                            offset: Offset(0, 2),
+                    Stack(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10.sp),
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.5),
+                                spreadRadius: 1,
+                                blurRadius: 4,
+                                offset: Offset(0, 2),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                      padding: EdgeInsets.all(15.sp),
-                      child: CustomNetworkImage(
-                        urlToImage: widget.cartModel.productPicture,
-                        shape: BoxShape.rectangle,
-                        height: 38.sp,
-                        width: 38.sp,
-                      ),
+                          padding: EdgeInsets.all(15.sp),
+                          child: CustomNetworkImage(
+                            urlToImage: widget.cartModel.productPicture,
+                            shape: BoxShape.rectangle,
+                            height: 38.sp,
+                            width: 38.sp,
+                          ),
+                        ),
+                        Visibility(
+                          visible: !(widget.cartModel.isWorking ?? true),
+                          child: Positioned(
+                            child: Container(
+                              padding: EdgeInsets.all(3.sp),
+                              decoration: BoxDecoration(
+                                color: Colors.red,
+                                borderRadius: BorderRadius.circular(2.sp),
+                              ),
+                              child: Text(
+                                'Ngừng kinh doanh',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 5.sp,
+                                ),
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
                     ),
                     SizedBox(width: 10.sp),
                     Column(
@@ -123,11 +149,20 @@ class _CartCardState extends State<CartCard> {
             Positioned(
               right: 10.sp,
               top: 5.sp,
-              child: Container(
-                color: Colors.transparent,
-                child: Icon(
-                  PhosphorIcons.x_light,
-                  size: 14.sp,
+              child: TouchableOpacity(
+                onTap: () {
+                  AppBloc.cartBloc.add(
+                    DeleteProductCartEvent(
+                      productId: widget.cartModel.productId,
+                    ),
+                  );
+                },
+                child: Container(
+                  color: Colors.transparent,
+                  child: Icon(
+                    PhosphorIcons.x_light,
+                    size: 14.sp,
+                  ),
                 ),
               ),
             ),

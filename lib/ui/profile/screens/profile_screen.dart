@@ -59,7 +59,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         child: Row(
                           children: [
                             Expanded(
-                              child: Center(
+                              child: Align(
+                                alignment: Alignment.centerLeft,
                                 child: Text(
                                   'Trang cá nhân',
                                   style: TextStyle(
@@ -92,36 +93,50 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     EdgeInsets.symmetric(horizontal: 16.sp),
                                 child: Row(
                                   children: [
-                                    CustomNetworkImage(
-                                      urlToImage: accountModel.photo,
-                                      height: 80.sp,
-                                      width: 80.sp,
+                                    Container(
+                                      padding: EdgeInsets.all(2.sp),
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Colors.white,
+                                        border: Border.all(color: colorPrimary),
+                                      ),
+                                      child: CustomNetworkImage(
+                                        urlToImage: accountModel.photo,
+                                        height: 80.sp,
+                                        width: 80.sp,
+                                      ),
                                     ),
                                     SizedBox(width: 15.sp),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          accountModel.name,
-                                          style: TextStyle(
-                                            fontSize: 15.sp,
-                                            fontWeight: FontWeight.w700,
-                                            color: colorPrimary,
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Container(
+                                            width: 55.w,
+                                            child: Text(
+                                              accountModel.name,
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                fontSize: 15.sp,
+                                                fontWeight: FontWeight.w700,
+                                                color: colorPrimary,
+                                              ),
+                                            ),
                                           ),
-                                        ),
-                                        SizedBox(height: 5.sp),
-                                        Text(
-                                          accountModel.phone,
-                                          style: TextStyle(
-                                            fontSize: 11.sp,
-                                            fontWeight: FontWeight.w700,
-                                            color: colorGray1,
-                                          ),
-                                        )
-                                      ],
+                                          SizedBox(height: 5.sp),
+                                          Text(
+                                            accountModel.phone,
+                                            style: TextStyle(
+                                              fontSize: 11.sp,
+                                              fontWeight: FontWeight.w700,
+                                              color: colorGray1,
+                                            ),
+                                          )
+                                        ],
+                                      ),
                                     ),
-                                    Spacer(),
                                     TouchableOpacity(
                                       onTap: () {
                                         AppNavigator.push(Routes.EDIT_PROFILE);

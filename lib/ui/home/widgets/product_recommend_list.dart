@@ -1,4 +1,3 @@
-import 'package:app_kltn_trunghoan/bloc/product/product_bloc.dart';
 import 'package:app_kltn_trunghoan/bloc/product_banner/product_home_bloc.dart';
 
 import 'package:app_kltn_trunghoan/models/product_model.dart';

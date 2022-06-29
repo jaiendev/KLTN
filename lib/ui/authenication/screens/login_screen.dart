@@ -33,7 +33,7 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _isRemember = true;
   bool _passwordVisible = false;
   var _emailErr = 'Bạn cần nhập email!!';
-  var _passErr = 'Mật khẩu phải có từ 6 kí tự';
+  var _passErr = 'Mật khẩu phải có từ 8 kí tự';
   List<Account>? listOptions = [];
   hideKeyboard() => usernameFocus.unfocus();
   @override
@@ -308,7 +308,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 },
                               ),
                               validator: (value) =>
-                                  value!.trim().length < 6 ? _passErr : null,
+                                  value!.trim().length < 8 ? _passErr : null,
                               onChanged: (value) => _password = value.trim(),
                             ),
                             SizedBox(height: 30.sp),

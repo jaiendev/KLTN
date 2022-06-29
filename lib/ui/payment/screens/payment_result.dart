@@ -1,3 +1,5 @@
+import 'package:app_kltn_trunghoan/bloc/app_bloc.dart';
+import 'package:app_kltn_trunghoan/bloc/home/home_bloc.dart';
 import 'package:app_kltn_trunghoan/common/widgets/button_primary.dart';
 import 'package:app_kltn_trunghoan/constants/constants.dart';
 import 'package:app_kltn_trunghoan/routes/app_pages.dart';
@@ -87,7 +89,8 @@ class PaymentResultScreen extends StatelessWidget {
                   EdgeInsets.only(bottom: 28.sp, left: 16.sp, right: 16.sp),
               child: ButtonPrimary(
                 onPressed: () {
-                  AppNavigator.popUntil(Routes.HOME);
+                  AppBloc.homeBloc.add(OnChangeIndexEvent());
+                  AppNavigator.pushNamedAndRemoveUntil(Routes.HOME);
                 },
                 text: 'Về trang chủ',
               ),

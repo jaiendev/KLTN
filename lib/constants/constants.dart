@@ -61,6 +61,7 @@ const String imageLoading = 'assets/images/img_loading.gif';
 const String iconExclamationMark = 'assets/icons/ic_exclamation_mark.png';
 const String iconEye = 'assets/icons/ic_eye.png';
 const String iconEyeOff = 'assets/icons/ic_eye_splash.png';
+const String iconCheck = 'assets/icons/ic_check_vector.png';
 
 const String iconRemove = 'assets/icons/ic_remove.png';
 const String imgUserDefault = 'assets/images/img_user_default.png';
@@ -132,4 +133,11 @@ const PATCH = 'PATCH';
 const HTTP_URL = 'http://';
 const HTTPS_URL = 'https://';
 const URL_VNPAY = 'https://evening-mountain-96387.herokuapp.com';
-const VNPAY_SUCCESS = 'thanh-toan/thanh-cong';
+const VNPAY_SUCCESS = 'api/v1/vnpay/vnpay_return';
+
+List<Color> colorVoucher = [
+  Colors.redAccent,
+  Colors.blueAccent,
+  Colors.greenAccent,
+  Colors.yellow,
+];
